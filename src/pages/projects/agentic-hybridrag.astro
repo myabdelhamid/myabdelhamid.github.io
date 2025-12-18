@@ -1,0 +1,154 @@
+---
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import { siteConfig } from "../../config";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Agentic HybridRAG Knowledge Base - {siteConfig.name}</title>
+    <meta name="description" content="Detailed overview of the Agentic HybridRAG Knowledge Base project" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  </head>
+  <body class="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-gray-100 min-h-screen">
+    <Header />
+    
+    <main class="container mx-auto px-4 py-16 max-w-4xl">
+      <!-- Back Button -->
+      <a 
+        href="/" 
+        class="inline-flex items-center text-blue-400 hover:text-blue-300 mb-8 transition-colors"
+      >
+        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+        </svg>
+        Back to Portfolio
+      </a>
+
+      <!-- Project Header -->
+      <div class="mb-12">
+        <h1 class="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+          Agentic HybridRAG Knowledge Base
+        </h1>
+        <p class="text-xl text-gray-300">
+          Intelligent hybrid RAG engine with agentic LLM routing, vector search, and knowledge graph integration
+        </p>
+      </div>
+
+      <!-- Video Section -->
+      <div class="mb-12 rounded-lg overflow-hidden shadow-2xl bg-gray-800">
+        <div class="aspect-video bg-gray-700 flex items-center justify-center">
+          <video 
+            controls 
+            class="w-full h-full"
+          >
+            <source src="/agentic-hybridrag-demo.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        </div>
+      </div>
+
+      <!-- Project Description -->
+      <section class="mb-12">
+        <h2 class="text-3xl font-bold mb-6 text-blue-400">Project Overview</h2>
+        <div class="prose prose-invert prose-lg max-w-none">
+          <p class="text-gray-300 mb-4">
+            The Agentic HybridRAG Knowledge Base is a production-grade AI system that combines the power of 
+            Retrieval-Augmented Generation (RAG) with intelligent agent-based routing and knowledge graph integration. 
+            This system represents the cutting edge of AI-powered information retrieval and synthesis.
+          </p>
+          
+          <h3 class="text-2xl font-semibold mt-8 mb-4 text-purple-400">Key Features</h3>
+          <ul class="space-y-2 text-gray-300">
+            <li class="flex items-start">
+              <span class="text-blue-400 mr-2">•</span>
+              <span><strong>Hybrid RAG Architecture:</strong> Combines vector search with traditional keyword-based retrieval for optimal results</span>
+            </li>
+            <li class="flex items-start">
+              <span class="text-blue-400 mr-2">•</span>
+              <span><strong>Agentic LLM Routing:</strong> Intelligent routing system that directs queries to the most appropriate processing pipeline</span>
+            </li>
+            <li class="flex items-start">
+              <span class="text-blue-400 mr-2">•</span>
+              <span><strong>Knowledge Graph Integration:</strong> Leverages structured knowledge representations for enhanced context understanding</span>
+            </li>
+            <li class="flex items-start">
+              <span class="text-blue-400 mr-2">•</span>
+              <span><strong>Two-Phase Extraction:</strong> Advanced information extraction process ensuring high accuracy</span>
+            </li>
+            <li class="flex items-start">
+              <span class="text-blue-400 mr-2">•</span>
+              <span><strong>Anti-Hallucination Grounding:</strong> Built-in mechanisms to reduce AI hallucinations and ensure factual accuracy</span>
+            </li>
+            <li class="flex items-start">
+              <span class="text-blue-400 mr-2">•</span>
+              <span><strong>Fully Local Deployment:</strong> Can run entirely on-premises for maximum data privacy and security</span>
+            </li>
+            <li class="flex items-start">
+              <span class="text-blue-400 mr-2">•</span>
+              <span><strong>Docker-Ready:</strong> Containerized for easy deployment and scaling</span>
+            </li>
+          </ul>
+
+          <h3 class="text-2xl font-semibold mt-8 mb-4 text-purple-400">Technical Stack</h3>
+          <div class="flex flex-wrap gap-2 mb-6">
+            <span class="px-3 py-1 bg-blue-500/20 text-blue-300 rounded-full text-sm">Python</span>
+            <span class="px-3 py-1 bg-blue-500/20 text-blue-300 rounded-full text-sm">Langchain</span>
+            <span class="px-3 py-1 bg-blue-500/20 text-blue-300 rounded-full text-sm">RAG</span>
+            <span class="px-3 py-1 bg-blue-500/20 text-blue-300 rounded-full text-sm">Knowledge Graphs</span>
+            <span class="px-3 py-1 bg-blue-500/20 text-blue-300 rounded-full text-sm">Docker</span>
+            <span class="px-3 py-1 bg-blue-500/20 text-blue-300 rounded-full text-sm">Redis</span>
+          </div>
+
+          <h3 class="text-2xl font-semibold mt-8 mb-4 text-purple-400">Implementation Details</h3>
+          <p class="text-gray-300 mb-4">
+            This project showcases advanced AI engineering principles, including sophisticated prompt engineering, 
+            vector embedding optimization, and efficient knowledge retrieval strategies. The system is designed 
+            to handle complex queries while maintaining high accuracy and low latency.
+          </p>
+          <p class="text-gray-300">
+            The architecture implements a multi-agent system where specialized agents handle different aspects 
+            of the query processing pipeline, from intent classification to response generation and verification.
+          </p>
+        </div>
+      </section>
+
+      <!-- Links Section -->
+      <section class="flex flex-wrap gap-4">
+        <a 
+          href="https://github.com/myabdelhamid/GraphRAG-Assistant" 
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center px-6 py-3 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors shadow-lg"
+        >
+          <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+          </svg>
+          View on GitHub
+        </a>
+        <a 
+          href="https://aidevroundup.com/?ref=devportfolio" 
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors shadow-lg"
+        >
+          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+          </svg>
+          View Live Demo
+        </a>
+      </section>
+    </main>
+
+    <Footer />
+  </body>
+</html>
+
+<style>
+  body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+</style>

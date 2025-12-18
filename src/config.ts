@@ -1,30 +1,30 @@
 export const siteConfig = {
-  name: "Ryan Fitzgerald",
-  title: "Senior Software Engineer",
-  description: "Portfolio website of Ryan Fitzgerald",
+  name: "Marwan Abdelhamid",
+  title: "AI/ML Engineer",
+  description: "Portfolio website of Marwan Abdelhamid",
   accentColor: "#1d4ed8",
   social: {
-    email: "your-email@example.com",
-    linkedin: "https://linkedin.com/in/yourprofile",
-    twitter: "https://x.com/rfitzio",
-    github: "https://github.com/RyanFitzgerald",
+    email: "myabdelhamidwork@gmail.com",
+    linkedin: "https://linkedin.com/in/marwan-abdelhamid",
+    upwork: "https://www.upwork.com/freelancers/~01e6e8365517aca8bb",
+    github: "https://github.com/myabdelhamid",
   },
   aboutMe:
-    "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rem quos asperiores nihil consequatur tempore cupiditate architecto natus commodi corrupti quas quasi facere est, dignissimos odit nam veniam sapiente ut, vitae eligendi ipsum dolor, nostrum ullam impedit! Corrupti ratione mollitia temporibus necessitatibus, consectetur reiciendis recusandae id, dolorum quaerat, vero pariatur. Ratione!",
-  skills: ["Javascript", "React", "Node.js", "Python", "AWS", "Docker"],
+    "AI/ML Engineer with hands-on experience in classical machine learning and LLM-powered systems, including document classification, HybridRAG architectures, and AI-driven web applications. Currently developing STORMBench with a professor from the Technical University of Munich (TUM), a synthetic benchmark for testing LVLMs under extreme driving conditions with radar augmentation.",
+  skills: ["TensorFlow", "Pytorch", "Transformers", "OpenCV", "Pandas", "Langchain", "RAG", "Knowledge Graphs", "Python", "Java", "C#", "SQL", "Redis", "Docker", "Kubernetes", "AWS", "Git", "React"],
   projects: [
     {
-      name: "AI Dev Roundup Newsletter",
+      name: "Agentic HybridRAG Knowledge Base",
       description:
-        "One concise email. Five minutes. Every Tuesday. Essential AI news & trends, production-ready libraries, powerful AI tools, and real-world code examples",
-      link: "https://aidevroundup.com/?ref=devportfolio",
+        "Intelligent hybrid RAG engine, agentic LLM routing, vector search, knowledge graph integration, two-phase extraction, anti-hallucination grounding, fully local, Docker-ready, production-grade AI system.",
+      link: "/projects/agentic-hybridrag",
       skills: ["React", "Node.js", "AWS"],
     },
     {
-      name: "Chrome Extension Mastery: Build Full-Stack Extensions with React & Node.js",
+      name: "DocEx - Document Classification System",
       description:
         "Master the art of building production-ready, full-stack Chrome Extensions using modern web technologies and best practices",
-      link: "https://fullstackextensions.com/?ref=devportfolio",
+      link: "/projects/docex",
       skills: ["React", "Node.js", "AWS"],
     },
     {
