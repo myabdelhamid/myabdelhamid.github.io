@@ -1,5 +1,18 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --page-bg: #ffffff;
+  color-scheme: light;
+}
+
+:root.dark {
+  --page-bg: #030712;
+  color-scheme: dark;
+}
+
 body {
   font-family: 'IBM Plex Mono', monospace;
+  background-color: var(--page-bg);
 }

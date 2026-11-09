@@ -1,0 +1,77 @@
+---
+const options = [
+  { mode: "light", label: "Light mode" },
+  { mode: "dark", label: "Dark mode" },
+  { mode: "system", label: "System default" },
+];
+---
+
+<div
+  role="group"
+  aria-label="Color theme"
+  class="theme-toggle fixed top-4 right-4 z-[60] flex items-center gap-0.5 rounded-full border border-gray-200 bg-white/80 p-1 shadow-sm backdrop-blur-sm dark:border-gray-700 dark:bg-gray-900/80"
+>
+  {
+    options.map(({ mode, label }) => (
+      <button
+        type="button"
+        data-theme-option={mode}
+        aria-label={label}
+        title={label}
+        aria-pressed="false"
+        class="flex h-8 w-8 items-center justify-center rounded-full text-gray-500 transition-colors hover:text-gray-900 aria-pressed:bg-gray-900 aria-pressed:text-white dark:text-gray-400 dark:hover:text-gray-100 dark:aria-pressed:bg-gray-100 dark:aria-pressed:text-gray-900"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="h-[18px] w-[18px]"
+          aria-hidden="true"
+        >
+          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+          {mode === "light" && (
+            <>
+              <path d="M12 12m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" />
+              <path d="M3 12h1m8 -9v1m8 8h1m-9 8v1m-6.4 -15.4l.7 .7m12.1 -.7l-.7 .7m0 11.4l.7 .7m-12.1 -.7l-.7 .7" />
+            </>
+          )}
+          {mode === "dark" && (
+            <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+          )}
+          {mode === "system" && (
+            <>
+              <path d="M3 5a1 1 0 0 1 1 -1h16a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-16a1 1 0 0 1 -1 -1v-10z" />
+              <path d="M7 20h10" />
+              <path d="M9 16v4" />
+              <path d="M15 16v4" />
+            </>
+          )}
+        </svg>
+      </button>
+    ))
+  }
+</div>
+
+<script>
+  type Mode = "light" | "dark" | "system";
+  type ThemeApi = { get: () => Mode; set: (mode: Mode) => void };
+  const theme = (window as unknown as { __theme?: ThemeApi }).__theme;
+  const buttons = document.querySelectorAll<HTMLButtonElement>("[data-theme-option]");
+
+  function sync() {
+    const current = theme?.get() ?? "system";
+    buttons.forEach((b) =>
+      b.setAttribute("aria-pressed", String(b.dataset.themeOption === current)),
+    );
+  }
+
+  buttons.forEach((b) =>
+    b.addEventListener("click", () => theme?.set(b.dataset.themeOption as Mode)),
+  );
+  document.addEventListener("themechange", sync);
+  sync();
+</script>

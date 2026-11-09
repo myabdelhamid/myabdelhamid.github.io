@@ -1,0 +1,45 @@
+---
+import { siteConfig } from "../config";
+const accent = siteConfig.accentColor;
+const accentDark = siteConfig.accentColorDark ?? siteConfig.accentColor;
+const accentVars = `:root{--accent:${accent};}:root.dark{--accent:${accentDark};}`;
+---
+
+<meta name="color-scheme" content="light dark" />
+<style is:global set:html={accentVars}></style>
+<script is:inline>
+  (function () {
+    var KEY = "theme";
+    var mode;
+    try {
+      mode = localStorage.getItem(KEY);
+    } catch (e) {}
+    if (mode !== "light" && mode !== "dark") mode = "system";
+    var mq = window.matchMedia("(prefers-color-scheme: dark)");
+
+    function apply() {
+      var dark = mode === "dark" || (mode === "system" && mq.matches);
+      document.documentElement.classList.toggle("dark", dark);
+    }
+
+    apply();
+    mq.addEventListener("change", function () {
+      if (mode === "system") apply();
+    });
+
+    window.__theme = {
+      get: function () {
+        return mode;
+      },
+      set: function (next) {
+        mode = next;
+        try {
+          if (next === "system") localStorage.removeItem(KEY);
+          else localStorage.setItem(KEY, next);
+        } catch (e) {}
+        apply();
+        document.dispatchEvent(new CustomEvent("themechange"));
+      },
+    };
+  })();
+</script>

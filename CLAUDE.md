@@ -55,7 +55,7 @@ When modifying components:
 ## Configuration Structure
 
 The `src/config.ts` exports a `siteConfig` object with these sections:
-- Basic info: name, title, description, accentColor
+- Basic info: name, title, description, accentColor, accentColorDark (accent used in dark mode)
 - Social links: email, linkedin, twitter, github (all optional)
 - aboutMe: string
 - skills: string[]
@@ -64,3 +64,9 @@ The `src/config.ts` exports a `siteConfig` object with these sections:
 - experience: array of {company, title, dateRange, bullets}
 - education: array of {school, degree, dateRange, achievements}
 - certifications: array of {name, issuer} (optional)
+## Theming (light / dark / system)
+
+- Dark mode is class-based: `src/styles/global.css` defines `@custom-variant dark` keyed on `.dark` on `<html>`
+- `ThemeHead.astro` (in every page's `<head>`) applies the saved choice before first paint and exposes `window.__theme`; "system" is the default and follows the OS live
+- `ThemeToggle.astro` (top of every page's `<body>`) is the Light / Dark / System switch; the choice is stored in `localStorage` under `theme`
+- Use `var(--accent)` for the accent color (it switches between `accentColor` and `accentColorDark`) and add `dark:` variants to any new color classes

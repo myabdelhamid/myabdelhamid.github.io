@@ -1,4 +1,6 @@
 ---
+import ThemeHead from "../../components/ThemeHead.astro";
+import ThemeToggle from "../../components/ThemeToggle.astro";
 import Header from "../../components/Header.astro";
 import Footer from "../../components/Footer.astro";
 import { siteConfig } from "../../config";
@@ -9,6 +11,7 @@ import "../../styles/global.css";
 <html lang="en">
   <head>
     <meta charset="utf-8" />
+    <ThemeHead />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content="Detailed overview of the Agentic HybridRAG Knowledge Base project" />
@@ -21,13 +24,14 @@ import "../../styles/global.css";
     />
     <title>Agentic HybridRAG Knowledge Base - {siteConfig.name}</title>
   </head>
-  <body class="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-gray-100 min-h-screen">
+  <body class="bg-gradient-to-br from-gray-50 dark:from-gray-900 via-white dark:via-gray-800 to-gray-100 dark:to-gray-900 text-gray-900 dark:text-gray-100 min-h-screen">
+    <ThemeToggle />
     
     <main class="container mx-auto px-4 py-16 max-w-4xl">
       <!-- Back Button -->
       <a 
         href="/" 
-        class="inline-flex items-center text-blue-400 hover:text-blue-300 mb-8 transition-colors"
+        class="inline-flex items-center text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 mb-8 transition-colors"
       >
         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
@@ -37,17 +41,17 @@ import "../../styles/global.css";
 
       <!-- Project Header -->
       <div class="mb-12">
-        <h1 class="text-4xl md:text-5xl font-bold leading-tight pb-2 mb-2 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+        <h1 class="text-4xl md:text-5xl font-bold leading-tight pb-2 mb-2 bg-gradient-to-r from-blue-600 dark:from-blue-400 to-purple-600 dark:to-purple-400 bg-clip-text text-transparent">
           Agentic HybridRAG Knowledge Engine
         </h1>
-        <p class="text-xl text-gray-300">
+        <p class="text-xl text-gray-700 dark:text-gray-300">
           Production-grade Retrieval-Augmented Generation system combining vector search, knowledge graphs, and intelligent agentic reasoning with local LLMs
         </p>
       </div>
 
       <!-- Video Section -->
-      <div class="mb-12 rounded-lg overflow-hidden shadow-2xl bg-gray-800">
-        <div class="aspect-video bg-gray-700 flex items-center justify-center">
+      <div class="mb-12 rounded-lg overflow-hidden shadow-2xl bg-white dark:bg-gray-800">
+        <div class="aspect-video bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
           <video 
             controls 
             class="w-full h-full"
@@ -60,113 +64,113 @@ import "../../styles/global.css";
 
       <!-- Project Description -->
       <section class="mb-12">
-        <h2 class="text-3xl font-bold mb-6 text-blue-400">Project Overview</h2>
-        <div class="prose prose-invert prose-lg max-w-none">
-          <p class="text-gray-300 mb-4">
+        <h2 class="text-3xl font-bold mb-6 text-blue-600 dark:text-blue-400">Project Overview</h2>
+        <div class="prose dark:prose-invert prose-lg max-w-none">
+          <p class="text-gray-700 dark:text-gray-300 mb-4">
             A sophisticated RAG system that uses phi3:mini for intelligent routing between vector databases and knowledge graphs, 
             with two-phase extraction to prevent relation loss across document chunks. The system achieves 97% relation preservation 
             compared to 53% with traditional chunk-local methods.
           </p>
           
-          <h3 class="text-2xl font-semibold mt-8 mb-4 text-purple-400">Key Features</h3>
-          <ul class="space-y-2 text-gray-300">
+          <h3 class="text-2xl font-semibold mt-8 mb-4 text-purple-600 dark:text-purple-400">Key Features</h3>
+          <ul class="space-y-2 text-gray-700 dark:text-gray-300">
             <li class="flex items-start">
-              <span class="text-blue-400 mr-2">•</span>
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
               <span><strong>Intelligent Agentic Routing:</strong> LLM-powered agent automatically selects optimal retrieval strategy - vector-only for explanations, graph-only for facts, or hybrid for comparisons</span>
             </li>
             <li class="flex items-start">
-              <span class="text-blue-400 mr-2">•</span>
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
               <span><strong>Two-Phase Extraction Pipeline:</strong> Solves cross-chunk relation problem with global entity registry, reducing relation loss from 47% to just 3%</span>
             </li>
             <li class="flex items-start">
-              <span class="text-blue-400 mr-2">•</span>
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
               <span><strong>Anti-Hallucination Grounding:</strong> Strict prompt engineering prevents LLMs from inventing facts or using external knowledge</span>
             </li>
             <li class="flex items-start">
-              <span class="text-blue-400 mr-2">•</span>
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
               <span><strong>100% Local Deployment:</strong> Runs entirely with Ollama - no API costs, ensuring data privacy and security</span>
             </li>
             <li class="flex items-start">
-              <span class="text-blue-400 mr-2">•</span>
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
               <span><strong>Fully Tested:</strong> 56/56 comprehensive tests passing covering planning, vector retrieval, graph retrieval, and end-to-end integration</span>
             </li>
             <li class="flex items-start">
-              <span class="text-blue-400 mr-2">•</span>
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
               <span><strong>Production-Ready:</strong> Docker-deployed with one-command setup, battle-tested on multi-document knowledge bases</span>
             </li>
           </ul>
 
-          <h3 class="text-2xl font-semibold mt-8 mb-4 text-purple-400">Technical Stack</h3>
+          <h3 class="text-2xl font-semibold mt-8 mb-4 text-purple-600 dark:text-purple-400">Technical Stack</h3>
           <div class="flex flex-wrap gap-2 mb-6">
-            <span class="px-3 py-1 bg-blue-500/20 text-blue-300 rounded-full text-sm">Python</span>
-            <span class="px-3 py-1 bg-blue-500/20 text-blue-300 rounded-full text-sm">FastAPI</span>
-            <span class="px-3 py-1 bg-blue-500/20 text-blue-300 rounded-full text-sm">React</span>
-            <span class="px-3 py-1 bg-blue-500/20 text-blue-300 rounded-full text-sm">Ollama</span>
-            <span class="px-3 py-1 bg-blue-500/20 text-blue-300 rounded-full text-sm">Neo4j</span>
-            <span class="px-3 py-1 bg-blue-500/20 text-blue-300 rounded-full text-sm">ChromaDB</span>
-            <span class="px-3 py-1 bg-blue-500/20 text-blue-300 rounded-full text-sm">Docker</span>
-            <span class="px-3 py-1 bg-blue-500/20 text-blue-300 rounded-full text-sm">LangChain</span>
+            <span class="px-3 py-1 bg-blue-500/10 dark:bg-blue-500/20 text-blue-700 dark:text-blue-300 rounded-full text-sm">Python</span>
+            <span class="px-3 py-1 bg-blue-500/10 dark:bg-blue-500/20 text-blue-700 dark:text-blue-300 rounded-full text-sm">FastAPI</span>
+            <span class="px-3 py-1 bg-blue-500/10 dark:bg-blue-500/20 text-blue-700 dark:text-blue-300 rounded-full text-sm">React</span>
+            <span class="px-3 py-1 bg-blue-500/10 dark:bg-blue-500/20 text-blue-700 dark:text-blue-300 rounded-full text-sm">Ollama</span>
+            <span class="px-3 py-1 bg-blue-500/10 dark:bg-blue-500/20 text-blue-700 dark:text-blue-300 rounded-full text-sm">Neo4j</span>
+            <span class="px-3 py-1 bg-blue-500/10 dark:bg-blue-500/20 text-blue-700 dark:text-blue-300 rounded-full text-sm">ChromaDB</span>
+            <span class="px-3 py-1 bg-blue-500/10 dark:bg-blue-500/20 text-blue-700 dark:text-blue-300 rounded-full text-sm">Docker</span>
+            <span class="px-3 py-1 bg-blue-500/10 dark:bg-blue-500/20 text-blue-700 dark:text-blue-300 rounded-full text-sm">LangChain</span>
           </div>
 
-          <h3 class="text-2xl font-semibold mt-8 mb-4 text-purple-400">Performance Benchmarks</h3>
-          <p class="text-gray-300 mb-4">
+          <h3 class="text-2xl font-semibold mt-8 mb-4 text-purple-600 dark:text-purple-400">Performance Benchmarks</h3>
+          <p class="text-gray-700 dark:text-gray-300 mb-4">
             The system demonstrates exceptional performance across key metrics:
           </p>
-          <ul class="space-y-2 text-gray-300">
+          <ul class="space-y-2 text-gray-700 dark:text-gray-300">
             <li class="flex items-start">
-              <span class="text-blue-400 mr-2">•</span>
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
               <span><strong>Entity Extraction:</strong> 95% accuracy with LLM-based extraction (phi3:mini), compared to 70% with spaCy NER</span>
             </li>
             <li class="flex items-start">
-              <span class="text-blue-400 mr-2">•</span>
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
               <span><strong>Relation Recall:</strong> 92% with two-phase extraction vs 45% with traditional methods</span>
             </li>
             <li class="flex items-start">
-              <span class="text-blue-400 mr-2">•</span>
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
               <span><strong>Cross-Chunk Relations:</strong> 97% preserved (up from 53% with chunk-local extraction)</span>
             </li>
             <li class="flex items-start">
-              <span class="text-blue-400 mr-2">•</span>
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
               <span><strong>Query Response Time:</strong> 0.5s for factual queries, 1.2s for explanatory, 1.8s for hybrid comparisons</span>
             </li>
           </ul>
 
-          <h3 class="text-2xl font-semibold mt-8 mb-4 text-purple-400">Implementation Highlights</h3>
-          <p class="text-gray-300 mb-4">
+          <h3 class="text-2xl font-semibold mt-8 mb-4 text-purple-600 dark:text-purple-400">Implementation Highlights</h3>
+          <p class="text-gray-700 dark:text-gray-300 mb-4">
             This project showcases advanced AI engineering principles with a multi-agent architecture where specialized agents 
             handle different aspects of the query processing pipeline:
           </p>
-          <ul class="space-y-2 text-gray-300">
+          <ul class="space-y-2 text-gray-700 dark:text-gray-300">
             <li class="flex items-start">
-              <span class="text-blue-400 mr-2">•</span>
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
               <span><strong>Phase 1 - Entity Discovery:</strong> Scans all document chunks to build a global entity registry with deduplication</span>
             </li>
             <li class="flex items-start">
-              <span class="text-blue-400 mr-2">•</span>
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
               <span><strong>Phase 2 - Relation Extraction:</strong> Uses global entity context to extract relationships, preventing cross-chunk information loss</span>
             </li>
             <li class="flex items-start">
-              <span class="text-blue-400 mr-2">•</span>
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
               <span><strong>Agentic Routing:</strong> Analyzes question semantics to determine optimal retrieval strategy (vector/graph/hybrid)</span>
             </li>
           </ul>
 
-          <h3 class="text-2xl font-semibold mt-8 mb-4 text-purple-400">Key Contributions</h3>
-          <ul class="space-y-2 text-gray-300">
+          <h3 class="text-2xl font-semibold mt-8 mb-4 text-purple-600 dark:text-purple-400">Key Contributions</h3>
+          <ul class="space-y-2 text-gray-700 dark:text-gray-300">
             <li class="flex items-start">
-              <span class="text-blue-400 mr-2">•</span>
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
               <span>Solves the chunk boundary problem in multi-document RAG systems</span>
             </li>
             <li class="flex items-start">
-              <span class="text-blue-400 mr-2">•</span>
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
               <span>Global entity registry for cross-chunk entity tracking and relation validation</span>
             </li>
             <li class="flex items-start">
-              <span class="text-blue-400 mr-2">•</span>
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
               <span>Automatic database selection based on question semantics using agentic reasoning</span>
             </li>
             <li class="flex items-start">
-              <span class="text-blue-400 mr-2">•</span>
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
               <span>Comprehensive test suite ensuring production reliability</span>
             </li>
           </ul>

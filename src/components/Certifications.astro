@@ -9,25 +9,25 @@ const hasCertifications =
     <section id="certifications" class="p-8 sm:p-12 md:p-16 lg:p-24">
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start">
         <div class="lg:col-span-4">
-          <h2 class="text-3xl sm:text-4xl md:text-5xl lg:text-2xl xl:text-4xl font-bold text-gray-900">
+          <h2 class="text-3xl sm:text-4xl md:text-5xl lg:text-2xl xl:text-4xl font-bold text-gray-900 dark:text-gray-100">
             Certifications
           </h2>
           <div
             class="w-[75px] h-[5px] mt-2 rounded-full"
-            style={`background-color: ${siteConfig.accentColor}`}
+            style={`background-color: var(--accent)`}
           />
         </div>
 
         <div class="lg:col-span-8">
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
             {siteConfig.certifications.map((cert) => (
-              <div class="bg-white rounded-lg shadow-sm border border-gray-100 p-4 sm:p-5 hover:shadow-md transition-shadow duration-300">
-                <h3 class="text-base sm:text-lg font-semibold text-gray-900">
+              <div class="bg-white dark:bg-gray-900 rounded-lg shadow-sm border border-gray-100 dark:border-gray-800 p-4 sm:p-5 hover:shadow-md transition-shadow duration-300">
+                <h3 class="text-base sm:text-lg font-semibold text-gray-900 dark:text-gray-100">
                   {cert.name}
                 </h3>
                 <p
                   class="text-sm sm:text-base"
-                  style={`color: ${siteConfig.accentColor}`}
+                  style={`color: var(--accent)`}
                 >
                   {cert.issuer}
                 </p>
