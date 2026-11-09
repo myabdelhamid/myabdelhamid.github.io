@@ -53,6 +53,7 @@ export const siteConfig = {
       name: "Amtsbrief - AI Decoder for German Official Letters",
       description:
         "Live solo build: a photo or PDF of a letter goes in; a plain-English explanation, amounts owed and deadlines come out. Deadlines are calculated in code, every answer links to its source line, and manipulation attempts are flagged. On my test set: 140/140 fields extracted correctly, 6/6 attacks blocked, 0 false alarms on 27 normal letters.",
+      link: "/projects/amtsbrief",
       skills: ["FastAPI", "Google Gemini", "Google Cloud", "pytest"],
     },
     {

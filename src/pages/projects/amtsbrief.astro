@@ -1,0 +1,271 @@
+---
+import ThemeHead from "../../components/ThemeHead.astro";
+import ThemeToggle from "../../components/ThemeToggle.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import { siteConfig } from "../../config";
+import "../../styles/global.css";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <ThemeHead />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content="Detailed overview of Amtsbrief, an AI decoder for German official letters" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap"
+      rel="stylesheet"
+    />
+    <title>Amtsbrief - {siteConfig.name}</title>
+  </head>
+  <body class="bg-gradient-to-br from-gray-50 dark:from-gray-900 via-white dark:via-gray-800 to-gray-100 dark:to-gray-900 text-gray-900 dark:text-gray-100 min-h-screen">
+    <ThemeToggle />
+    
+    <main class="container mx-auto px-4 py-16 max-w-4xl">
+      <!-- Back Button -->
+      <a 
+        href="/" 
+        class="inline-flex items-center text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 mb-8 transition-colors"
+      >
+        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+        </svg>
+        Back to Portfolio
+      </a>
+
+      <!-- Project Header -->
+      <div class="mb-12">
+        <h1 class="text-4xl md:text-5xl font-bold leading-tight pb-2 mb-2 bg-gradient-to-r from-blue-600 dark:from-blue-400 to-purple-600 dark:to-purple-400 bg-clip-text text-transparent">
+          Amtsbrief - AI Decoder for German Official Letters
+        </h1>
+        <p class="text-xl text-gray-700 dark:text-gray-300">
+          Explains German official letters (Finanzamt, Bürgeramt, Krankenkasse, landlord, fines) in plain English: it finds the amounts and deadlines, shows the line each claim comes from, and puts the deadlines in your calendar
+        </p>
+      </div>
+
+      <!-- Video Section -->
+      <div class="mb-12 rounded-lg overflow-hidden shadow-2xl bg-white dark:bg-gray-800">
+        <div class="aspect-video bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
+          <video 
+            controls 
+            class="w-full h-full"
+          >
+            <source src="/Amtsbrief_draft1.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        </div>
+      </div>
+
+      <!-- Project Description -->
+      <section class="mb-12">
+        <h2 class="text-3xl font-bold mb-6 text-blue-600 dark:text-blue-400">Project Overview</h2>
+        <div class="max-w-none text-lg">
+          <p class="text-gray-700 dark:text-gray-300 mb-4">
+            A live web app, built solo: you upload a photo or PDF of a German official letter, and it explains the letter in plain English, pulls out the amounts and deadlines, links every claim to the exact line it came from, and adds the deadlines to your calendar.
+          </p>
+          <p class="text-gray-700 dark:text-gray-300 mb-4">
+            It's built around one rule: <strong>the model's output is never shown as fact until code has checked it against the letter.</strong> Anything that can't be verified is shown as "Couldn't verify" instead of as a guess.
+          </p>
+
+          <h3 class="text-2xl font-semibold mt-8 mb-4 text-purple-600 dark:text-purple-400">How It Works</h3>
+          <p class="text-gray-700 dark:text-gray-300 mb-4">
+            upload → preprocess → transcribe → extract → validate → store + calendar
+          </p>
+          <ul class="space-y-2 text-gray-700 dark:text-gray-300">
+            <li class="flex items-start">
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
+              <span><strong>Preprocess:</strong> PDFs (digital or scanned), JPEG, PNG, WebP and HEIC become one image per page. EXIF is removed, so GPS data never leaves the server, and a PDF's text layer is ignored so it can't differ from what a person sees</span>
+            </li>
+            <li class="flex items-start">
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
+              <span><strong>Transcribe:</strong> Gemini copies each page line by line with numbered line IDs (P1-L1, P1-L2, …)</span>
+            </li>
+            <li class="flex items-start">
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
+              <span><strong>Extract:</strong> a second call fills a Pydantic schema, and every field carries a verbatim quote and the line IDs it came from</span>
+            </li>
+            <li class="flex items-start">
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
+              <span><strong>Validate (plain code):</strong> cited lines must exist, quotes must match their lines, dates and amounts must parse and IBAN checksums must pass. A failed check gets one retry with specific feedback; anything still failing goes to "Couldn't verify"</span>
+            </li>
+            <li class="flex items-start">
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
+              <span><strong>Deadlines:</strong> the model only extracts the wording ("innerhalb eines Monats nach Bekanntgabe"); code computes the date step by step, applying the 4-day receipt rule, month-end clamping, calendar periods and the weekend shift. Wording the code can't compute is never guessed</span>
+            </li>
+          </ul>
+
+          <h3 class="text-2xl font-semibold mt-8 mb-4 text-purple-600 dark:text-purple-400">Design Decisions</h3>
+          <ul class="space-y-2 text-gray-700 dark:text-gray-300">
+            <li class="flex items-start">
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
+              <span><strong>Transcription and extraction are separate calls,</strong> so every claim can cite transcript lines and code can verify those citations</span>
+            </li>
+            <li class="flex items-start">
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
+              <span><strong>The LLM never does date math.</strong> Legal deadlines follow rules, and code applies them the same way every time</span>
+            </li>
+            <li class="flex items-start">
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
+              <span><strong>No tools, no actions.</strong> The app informs and reminds; what to do about a letter is the user's decision. The model can only fill a schema</span>
+            </li>
+          </ul>
+
+          <h3 class="text-2xl font-semibold mt-8 mb-4 text-purple-600 dark:text-purple-400">Prompt-Injection Defenses</h3>
+          <p class="text-gray-700 dark:text-gray-300 mb-4">
+            A letter is untrusted input: anyone can print "ignore your instructions" on one. Six attack letters based on published attacks (indirect injection, hidden text, invoice bank-detail swaps, output smuggling) are part of the test set.
+          </p>
+          <ul class="space-y-2 text-gray-700 dark:text-gray-300">
+            <li class="flex items-start">
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
+              <span><strong>Detect and warn:</strong> lines addressed to a machine ("ignore previous instructions", fake end markers) are flagged and the user sees a warning. Anything citing those lines goes to "Couldn't verify", and an injected date never becomes a reminder</span>
+            </li>
+            <li class="flex items-start">
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
+              <span><strong>Hardened transcription:</strong> the model copies every line, including text addressed to it, and follows none of it. Its thinking is capped, so a page can't make it think for minutes</span>
+            </li>
+            <li class="flex items-start">
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
+              <span><strong>Spotlighting:</strong> in the extraction prompt the transcript is fenced as data and the flagged lines are named</span>
+            </li>
+            <li class="flex items-start">
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
+              <span><strong>Own-words check:</strong> a URL, email, IBAN or phone number in a summary must appear in a trustworthy line of the letter, which stops "call 0900 …" from reaching the user</span>
+            </li>
+          </ul>
+
+          <h3 class="text-2xl font-semibold mt-8 mb-4 text-purple-600 dark:text-purple-400">Evaluation</h3>
+          <p class="text-gray-700 dark:text-gray-300 mb-4">
+            All numbers are from one run each, with Gemini Flash:
+          </p>
+          <ul class="space-y-2 text-gray-700 dark:text-gray-300">
+            <li class="flex items-start">
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
+              <span><strong>Extraction (20 synthetic letters, 6 types):</strong> 140/140 fields correct, 19/20 letters fully verified</span>
+            </li>
+            <li class="flex items-start">
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
+              <span><strong>Held-out real-format letters (7 letters, 1–3 pages):</strong> 48/49 fields correct, 5/7 fully verified</span>
+            </li>
+            <li class="flex items-start">
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
+              <span><strong>Transcription:</strong> 99.4% of lines exact when ignoring dash style (90.4% strictly)</span>
+            </li>
+            <li class="flex items-start">
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
+              <span><strong>Prompt injection (6 attack letters):</strong> 6/6 attacks blocked, 6/6 users warned, 42/42 fields correct</span>
+            </li>
+            <li class="flex items-start">
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
+              <span><strong>False alarms:</strong> 0 injection warnings across all 27 normal letters</span>
+            </li>
+          </ul>
+          <p class="text-gray-700 dark:text-gray-300 mt-4 mb-4">
+            "Not fully verified" is mostly the system working as intended, for example a deadline counted from an undated event or an IBAN printed wrongly in the letter itself: the item is shown as "Couldn't verify" instead of as a guess.
+          </p>
+
+          <h3 class="text-2xl font-semibold mt-8 mb-4 text-purple-600 dark:text-purple-400">Deployment & Privacy</h3>
+          <ul class="space-y-2 text-gray-700 dark:text-gray-300">
+            <li class="flex items-start">
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
+              <span>One container on Google Cloud Run: FastAPI serves both the API and the built React app</span>
+            </li>
+            <li class="flex items-start">
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
+              <span>Sign-in with Firebase Auth (Google); letters are stored in Firestore under each user's id, with a limit of 20 letters per user per day</span>
+            </li>
+            <li class="flex items-start">
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
+              <span>Every push to main runs the tests and deploys through GitHub Actions, authenticated with Workload Identity Federation, so no key is stored in the repository</span>
+            </li>
+            <li class="flex items-start">
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
+              <span>Only the analysis is stored, never the uploaded file; logs contain ids and counts, never letter text; users can delete any letter</span>
+            </li>
+          </ul>
+
+          <h3 class="text-2xl font-semibold mt-8 mb-4 text-purple-600 dark:text-purple-400">Technical Stack</h3>
+          <div class="flex flex-wrap gap-2 mb-6">
+            <span class="px-3 py-1 bg-blue-500/10 dark:bg-blue-500/20 text-blue-700 dark:text-blue-300 rounded-full text-sm">Python</span>
+            <span class="px-3 py-1 bg-blue-500/10 dark:bg-blue-500/20 text-blue-700 dark:text-blue-300 rounded-full text-sm">FastAPI</span>
+            <span class="px-3 py-1 bg-blue-500/10 dark:bg-blue-500/20 text-blue-700 dark:text-blue-300 rounded-full text-sm">Pydantic</span>
+            <span class="px-3 py-1 bg-blue-500/10 dark:bg-blue-500/20 text-blue-700 dark:text-blue-300 rounded-full text-sm">Google Gemini (Vertex AI)</span>
+            <span class="px-3 py-1 bg-blue-500/10 dark:bg-blue-500/20 text-blue-700 dark:text-blue-300 rounded-full text-sm">React</span>
+            <span class="px-3 py-1 bg-blue-500/10 dark:bg-blue-500/20 text-blue-700 dark:text-blue-300 rounded-full text-sm">TypeScript</span>
+            <span class="px-3 py-1 bg-blue-500/10 dark:bg-blue-500/20 text-blue-700 dark:text-blue-300 rounded-full text-sm">Vite</span>
+            <span class="px-3 py-1 bg-blue-500/10 dark:bg-blue-500/20 text-blue-700 dark:text-blue-300 rounded-full text-sm">Tailwind CSS</span>
+            <span class="px-3 py-1 bg-blue-500/10 dark:bg-blue-500/20 text-blue-700 dark:text-blue-300 rounded-full text-sm">Firebase Auth</span>
+            <span class="px-3 py-1 bg-blue-500/10 dark:bg-blue-500/20 text-blue-700 dark:text-blue-300 rounded-full text-sm">Firestore</span>
+            <span class="px-3 py-1 bg-blue-500/10 dark:bg-blue-500/20 text-blue-700 dark:text-blue-300 rounded-full text-sm">Google Cloud Run</span>
+            <span class="px-3 py-1 bg-blue-500/10 dark:bg-blue-500/20 text-blue-700 dark:text-blue-300 rounded-full text-sm">Docker</span>
+            <span class="px-3 py-1 bg-blue-500/10 dark:bg-blue-500/20 text-blue-700 dark:text-blue-300 rounded-full text-sm">GitHub Actions</span>
+            <span class="px-3 py-1 bg-blue-500/10 dark:bg-blue-500/20 text-blue-700 dark:text-blue-300 rounded-full text-sm">pytest</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Links Section -->
+      <section class="flex flex-wrap gap-4">
+        <a 
+          href="https://github.com/myabdelhamid/Amtsbrief" 
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors shadow-lg"
+        >
+          <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+          </svg>
+          View on GitHub
+        </a>
+      </section>
+    </main>
+    <!-- Scroll to Top Button -->
+    <button
+      id="scrollToTop"
+      class="fixed bottom-8 right-8 w-12 h-12 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-lg transition-all duration-300 opacity-0 pointer-events-none flex items-center justify-center z-50"
+      aria-label="Scroll to top"
+    >
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+      </svg>
+    </button>
+    <Footer />
+  </body>
+</html>
+
+<style>
+  body {
+    font-family: 'IBM Plex Mono', monospace;
+  }
+
+  #scrollToTop.show {
+    opacity: 1;
+    pointer-events: auto;
+  }
+</style>
+
+<script>
+  const scrollToTopBtn = document.getElementById('scrollToTop');
+  
+  // Show button when user scrolls down
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 300) {
+      scrollToTopBtn?.classList.add('show');
+    } else {
+      scrollToTopBtn?.classList.remove('show');
+    }
+  });
+  
+  // Scroll to top when button is clicked
+  scrollToTopBtn?.addEventListener('click', () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  });
+</script>
