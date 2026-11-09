@@ -40,7 +40,7 @@ export const siteConfig = {
     "Demos & PoCs",
     "Workshops",
   ],
-  languages: ["English (C1)", "Arabic (Fluent)", "German (B2)"],
+  languages: ["English (C1)", "Arabic (Native)", "German (B2)"],
   projects: [
     {
       name: "StormVLM - Radar-Augmented VLM for Extreme Weather",
