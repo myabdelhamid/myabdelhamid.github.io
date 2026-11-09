@@ -1,4 +1,6 @@
 ---
+import ThemeHead from "../../components/ThemeHead.astro";
+import ThemeToggle from "../../components/ThemeToggle.astro";
 import Header from "../../components/Header.astro";
 import Footer from "../../components/Footer.astro";
 import { siteConfig } from "../../config";
@@ -9,6 +11,7 @@ import "../../styles/global.css";
 <html lang="en">
   <head>
     <meta charset="utf-8" />
+    <ThemeHead />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content="Enterprise Document Management System with AI-powered classification" />
@@ -21,13 +24,14 @@ import "../../styles/global.css";
     />
     <title>DocRepo - AI-Powered Document Management - {siteConfig.name}</title>
   </head>
-  <body class="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-gray-100 min-h-screen">
+  <body class="bg-gradient-to-br from-gray-50 dark:from-gray-900 via-white dark:via-gray-800 to-gray-100 dark:to-gray-900 text-gray-900 dark:text-gray-100 min-h-screen">
+    <ThemeToggle />
     
     <main class="container mx-auto px-4 py-16 max-w-4xl">
       <!-- Back Button -->
       <a 
         href="/" 
-        class="inline-flex items-center text-blue-400 hover:text-blue-300 mb-8 transition-colors"
+        class="inline-flex items-center text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 mb-8 transition-colors"
       >
         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
@@ -37,17 +41,17 @@ import "../../styles/global.css";
 
       <!-- Project Header -->
       <div class="mb-12">
-        <h1 class="text-4xl md:text-5xl font-bold leading-tight pb-2 mb-2 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+        <h1 class="text-4xl md:text-5xl font-bold leading-tight pb-2 mb-2 bg-gradient-to-r from-blue-600 dark:from-blue-400 to-purple-600 dark:to-purple-400 bg-clip-text text-transparent">
           DocRepo - Document Classification System
         </h1>
-        <p class="text-xl text-gray-300">
+        <p class="text-xl text-gray-700 dark:text-gray-300">
           Full-stack enterprise document management system with integrated AI-powered multi-class document classification
         </p>
       </div>
 
       <!-- Video Section -->
-      <div class="mb-12 rounded-lg overflow-hidden shadow-2xl bg-gray-800">
-        <div class="aspect-video bg-gray-700 flex items-center justify-center">
+      <div class="mb-12 rounded-lg overflow-hidden shadow-2xl bg-white dark:bg-gray-800">
+        <div class="aspect-video bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
           <video 
             controls 
             class="w-full h-full"
@@ -60,172 +64,172 @@ import "../../styles/global.css";
 
       <!-- Project Description -->
       <section class="mb-12">
-        <h2 class="text-3xl font-bold mb-6 text-blue-400">Project Overview</h2>
-        <div class="prose prose-invert prose-lg max-w-none">
-          <p class="text-gray-300 mb-4">
+        <h2 class="text-3xl font-bold mb-6 text-blue-600 dark:text-blue-400">Project Overview</h2>
+        <div class="prose dark:prose-invert prose-lg max-w-none">
+          <p class="text-gray-700 dark:text-gray-300 mb-4">
             A unified enterprise document management platform combining DocRepo (document repository with version control) 
             and DocEx (AI-powered multi-class document classification). The system automatically categorizes documents into 
             4 categories with 100% accuracy using Random Forest ML models.
           </p>
           
-          <h3 class="text-2xl font-semibold mt-8 mb-4 text-purple-400">Key Features</h3>
-          <ul class="space-y-2 text-gray-300">
+          <h3 class="text-2xl font-semibold mt-8 mb-4 text-purple-600 dark:text-purple-400">Key Features</h3>
+          <ul class="space-y-2 text-gray-700 dark:text-gray-300">
             <li class="flex items-start">
-              <span class="text-blue-400 mr-2">•</span>
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
               <span><strong>AI-Powered Classification:</strong> Auto-classifies documents into Emails, Invoices, Financial Statements, Resumes with 100% accuracy</span>
             </li>
             <li class="flex items-start">
-              <span class="text-blue-400 mr-2">•</span>
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
               <span><strong>Advanced Document Versioning:</strong> Full audit trail with document history, automatic version control, and rollback capabilities</span>
             </li>
             <li class="flex items-start">
-              <span class="text-blue-400 mr-2">•</span>
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
               <span><strong>Enterprise User Management:</strong> Role-based access control (Administrator, Manager, Employee, Guest) with department organization</span>
             </li>
             <li class="flex items-start">
-              <span class="text-blue-400 mr-2">•</span>
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
               <span><strong>Multi-Format OCR Support:</strong> Processes PDFs, images (PNG, JPG, TIFF, BMP, GIF) and scanned documents with Tesseract OCR</span>
             </li>
             <li class="flex items-start">
-              <span class="text-blue-400 mr-2">•</span>
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
               <span><strong>Docker Containerization:</strong> Complete Docker support with production and development environments, one-command setup</span>
             </li>
             <li class="flex items-start">
-              <span class="text-blue-400 mr-2">•</span>
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
               <span><strong>Production Optimized:</strong> FastAPI backend with ~200ms authentication, PostgreSQL with foreign key constraints, React 19 frontend</span>
             </li>
           </ul>
 
-          <h3 class="text-2xl font-semibold mt-8 mb-4 text-purple-400">Technical Stack</h3>
+          <h3 class="text-2xl font-semibold mt-8 mb-4 text-purple-600 dark:text-purple-400">Technical Stack</h3>
           <div class="flex flex-wrap gap-2 mb-6">
-            <span class="px-3 py-1 bg-blue-500/20 text-blue-300 rounded-full text-sm">Python</span>
-            <span class="px-3 py-1 bg-blue-500/20 text-blue-300 rounded-full text-sm">Javascript</span>
-            <span class="px-3 py-1 bg-blue-500/20 text-blue-300 rounded-full text-sm">FastAPI</span>
-            <span class="px-3 py-1 bg-blue-500/20 text-blue-300 rounded-full text-sm">React</span>
-            <span class="px-3 py-1 bg-blue-500/20 text-blue-300 rounded-full text-sm">PostgreSQL</span>
-            <span class="px-3 py-1 bg-blue-500/20 text-blue-300 rounded-full text-sm">Docker</span>
-            <span class="px-3 py-1 bg-blue-500/20 text-blue-300 rounded-full text-sm">Scikit-learn</span>
-            <span class="px-3 py-1 bg-blue-500/20 text-blue-300 rounded-full text-sm">Tesseract OCR</span>
+            <span class="px-3 py-1 bg-blue-500/10 dark:bg-blue-500/20 text-blue-700 dark:text-blue-300 rounded-full text-sm">Python</span>
+            <span class="px-3 py-1 bg-blue-500/10 dark:bg-blue-500/20 text-blue-700 dark:text-blue-300 rounded-full text-sm">Javascript</span>
+            <span class="px-3 py-1 bg-blue-500/10 dark:bg-blue-500/20 text-blue-700 dark:text-blue-300 rounded-full text-sm">FastAPI</span>
+            <span class="px-3 py-1 bg-blue-500/10 dark:bg-blue-500/20 text-blue-700 dark:text-blue-300 rounded-full text-sm">React</span>
+            <span class="px-3 py-1 bg-blue-500/10 dark:bg-blue-500/20 text-blue-700 dark:text-blue-300 rounded-full text-sm">PostgreSQL</span>
+            <span class="px-3 py-1 bg-blue-500/10 dark:bg-blue-500/20 text-blue-700 dark:text-blue-300 rounded-full text-sm">Docker</span>
+            <span class="px-3 py-1 bg-blue-500/10 dark:bg-blue-500/20 text-blue-700 dark:text-blue-300 rounded-full text-sm">Scikit-learn</span>
+            <span class="px-3 py-1 bg-blue-500/10 dark:bg-blue-500/20 text-blue-700 dark:text-blue-300 rounded-full text-sm">Tesseract OCR</span>
           </div>
 
-          <h3 class="text-2xl font-semibold mt-8 mb-4 text-purple-400">AI Classification Performance</h3>
-          <p class="text-gray-300 mb-4">
+          <h3 class="text-2xl font-semibold mt-8 mb-4 text-purple-600 dark:text-purple-400">AI Classification Performance</h3>
+          <p class="text-gray-700 dark:text-gray-300 mb-4">
             The DocEx ML system demonstrates exceptional accuracy across all document types:
           </p>
-          <ul class="space-y-2 text-gray-300">
+          <ul class="space-y-2 text-gray-700 dark:text-gray-300">
             <li class="flex items-start">
-              <span class="text-blue-400 mr-2">•</span>
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
               <span><strong>Overall Accuracy:</strong> 100% on balanced datasets with Random Forest classifier</span>
             </li>
             <li class="flex items-start">
-              <span class="text-blue-400 mr-2">•</span>
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
               <span><strong>Feature Engineering:</strong> 40+ discriminative features extracted for precise classification</span>
             </li>
             <li class="flex items-start">
-              <span class="text-blue-400 mr-2">•</span>
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
               <span><strong>Real-World Datasets:</strong> Trained on actual Kaggle datasets (200 emails, 100 invoices, 91 financial statements, 67 resumes)</span>
             </li>
             <li class="flex items-start">
-              <span class="text-blue-400 mr-2">•</span>
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
               <span><strong>Classification Speed:</strong> ~15ms for text classification, ~1.2s for document upload with OCR</span>
             </li>
             <li class="flex items-start">
-              <span class="text-blue-400 mr-2">•</span>
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
               <span><strong>Balanced Training:</strong> Equal representation of all document types (67 samples per class) prevents bias</span>
             </li>
           </ul>
 
-          <h3 class="text-2xl font-semibold mt-8 mb-4 text-purple-400">System Architecture</h3>
-          <p class="text-gray-300 mb-4">
+          <h3 class="text-2xl font-semibold mt-8 mb-4 text-purple-600 dark:text-purple-400">System Architecture</h3>
+          <p class="text-gray-700 dark:text-gray-300 mb-4">
             Integrated two-tier architecture with seamless communication between document management and AI classification:
           </p>
-          <ul class="space-y-2 text-gray-300">
+          <ul class="space-y-2 text-gray-700 dark:text-gray-300">
             <li class="flex items-start">
-              <span class="text-blue-400 mr-2">•</span>
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
               <span><strong>DocRepo Frontend:</strong> React 19 with Material-UI, responsive design, drag-and-drop upload</span>
             </li>
             <li class="flex items-start">
-              <span class="text-blue-400 mr-2">•</span>
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
               <span><strong>DocRepo Backend:</strong> FastAPI with SQLAlchemy ORM, JWT authentication, role-based permissions</span>
             </li>
             <li class="flex items-start">
-              <span class="text-blue-400 mr-2">•</span>
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
               <span><strong>DocEx AI Service:</strong> FastAPI REST service with Random Forest model, Tesseract OCR, spaCy NLP</span>
             </li>
             <li class="flex items-start">
-              <span class="text-blue-400 mr-2">•</span>
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
               <span><strong>Database Layer:</strong> PostgreSQL with complex relationships, foreign key constraints, cascade deletion</span>
             </li>
             <li class="flex items-start">
-              <span class="text-blue-400 mr-2">•</span>
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
               <span><strong>Integration Flow:</strong> Upload → OCR/Text Extraction → Feature Engineering → ML Classification → Auto-tagging</span>
             </li>
           </ul>
 
-          <h3 class="text-2xl font-semibold mt-8 mb-4 text-purple-400">Key ML Features</h3>
-          <ul class="space-y-2 text-gray-300">
+          <h3 class="text-2xl font-semibold mt-8 mb-4 text-purple-600 dark:text-purple-400">Key ML Features</h3>
+          <ul class="space-y-2 text-gray-700 dark:text-gray-300">
             <li class="flex items-start">
-              <span class="text-blue-400 mr-2">•</span>
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
               <span><strong>Email Detection:</strong> Email patterns, headers, signatures, greeting detection</span>
             </li>
             <li class="flex items-start">
-              <span class="text-blue-400 mr-2">•</span>
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
               <span><strong>Invoice Recognition:</strong> Invoice numbers, seller info, itemized lists, total amounts</span>
             </li>
             <li class="flex items-start">
-              <span class="text-blue-400 mr-2">•</span>
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
               <span><strong>Financial Statement Analysis:</strong> Accounting terms, transaction patterns, financial vocabulary</span>
             </li>
             <li class="flex items-start">
-              <span class="text-blue-400 mr-2">•</span>
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
               <span><strong>Resume Parsing:</strong> Education sections, work experience, skills, career objectives</span>
             </li>
             <li class="flex items-start">
-              <span class="text-blue-400 mr-2">•</span>
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
               <span><strong>Named Entity Recognition:</strong> Person, organization, date, and money entity detection</span>
             </li>
           </ul>
 
-          <h3 class="text-2xl font-semibold mt-8 mb-4 text-purple-400">Deployment & Scalability</h3>
-          <ul class="space-y-2 text-gray-300">
+          <h3 class="text-2xl font-semibold mt-8 mb-4 text-purple-600 dark:text-purple-400">Deployment & Scalability</h3>
+          <ul class="space-y-2 text-gray-700 dark:text-gray-300">
             <li class="flex items-start">
-              <span class="text-blue-400 mr-2">•</span>
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
               <span><strong>Docker Compose:</strong> Full containerization with orchestration, volume persistence, health checks</span>
             </li>
             <li class="flex items-start">
-              <span class="text-blue-400 mr-2">•</span>
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
               <span><strong>Production Ready:</strong> Optimized for enterprise deployment with security, monitoring, backups</span>
             </li>
             <li class="flex items-start">
-              <span class="text-blue-400 mr-2">•</span>
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
               <span><strong>REST APIs:</strong> Comprehensive API endpoints for integration with other systems</span>
             </li>
             <li class="flex items-start">
-              <span class="text-blue-400 mr-2">•</span>
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
               <span><strong>Scalable Architecture:</strong> Modular design supports microservices, caching, load balancing</span>
             </li>
           </ul>
 
-          <h3 class="text-2xl font-semibold mt-8 mb-4 text-purple-400">Business Benefits</h3>
-          <ul class="space-y-2 text-gray-300">
+          <h3 class="text-2xl font-semibold mt-8 mb-4 text-purple-600 dark:text-purple-400">Business Benefits</h3>
+          <ul class="space-y-2 text-gray-700 dark:text-gray-300">
             <li class="flex items-start">
-              <span class="text-blue-400 mr-2">•</span>
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
               <span>Reduces manual document classification work by 90%</span>
             </li>
             <li class="flex items-start">
-              <span class="text-blue-400 mr-2">•</span>
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
               <span>Enables smart search and filtering by document type</span>
             </li>
             <li class="flex items-start">
-              <span class="text-blue-400 mr-2">•</span>
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
               <span>Provides complete audit trails for compliance requirements</span>
             </li>
             <li class="flex items-start">
-              <span class="text-blue-400 mr-2">•</span>
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
               <span>Auto-tagging improves document organization and retrieval</span>
             </li>
             <li class="flex items-start">
-              <span class="text-blue-400 mr-2">•</span>
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
               <span>Role-based access control ensures data security and privacy</span>
             </li>
           </ul>

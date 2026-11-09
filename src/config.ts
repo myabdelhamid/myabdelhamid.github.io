@@ -3,6 +3,8 @@ export const siteConfig = {
   title: "AI Engineer & Consultant",
   description: "Portfolio website of Marwan Abdelhamid",
   accentColor: "#1d4ed8",
+  // Lighter accent used in dark mode so it stays readable on dark backgrounds
+  accentColorDark: "#60a5fa",
   social: {
     email: "myabdelhamidwork@gmail.com",
     linkedin: "https://linkedin.com/in/marwan-abdelhamid",

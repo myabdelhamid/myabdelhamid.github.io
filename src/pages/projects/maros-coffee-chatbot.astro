@@ -1,4 +1,6 @@
 ---
+import ThemeHead from "../../components/ThemeHead.astro";
+import ThemeToggle from "../../components/ThemeToggle.astro";
 import Header from "../../components/Header.astro";
 import Footer from "../../components/Footer.astro";
 import { siteConfig } from "../../config";
@@ -9,6 +11,7 @@ import "../../styles/global.css";
 <html lang="en">
   <head>
     <meta charset="utf-8" />
+    <ThemeHead />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content="AI-powered coffee shop chatbot simulating a friendly cashier experience" />
@@ -21,13 +24,14 @@ import "../../styles/global.css";
     />
     <title>Maro's Coffee AI Chatbot - {siteConfig.name}</title>
   </head>
-  <body class="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-gray-100 min-h-screen">
+  <body class="bg-gradient-to-br from-gray-50 dark:from-gray-900 via-white dark:via-gray-800 to-gray-100 dark:to-gray-900 text-gray-900 dark:text-gray-100 min-h-screen">
+    <ThemeToggle />
     
     <main class="container mx-auto px-4 py-16 max-w-4xl">
       <!-- Back Button -->
       <a 
         href="/" 
-        class="inline-flex items-center text-blue-400 hover:text-blue-300 mb-8 transition-colors"
+        class="inline-flex items-center text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 mb-8 transition-colors"
       >
         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
@@ -37,17 +41,17 @@ import "../../styles/global.css";
 
       <!-- Project Header -->
       <div class="mb-12">
-        <h1 class="text-4xl md:text-5xl font-bold leading-tight pb-2 mb-2 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+        <h1 class="text-4xl md:text-5xl font-bold leading-tight pb-2 mb-2 bg-gradient-to-r from-blue-600 dark:from-blue-400 to-purple-600 dark:to-purple-400 bg-clip-text text-transparent">
           Maro's Coffee AI Chatbot
         </h1>
-        <p class="text-xl text-gray-300">
+        <p class="text-xl text-gray-700 dark:text-gray-300">
           AI-powered conversational chatbot simulating a friendly coffee shop cashier with dynamic menu management
         </p>
       </div>
 
       <!-- Video Section -->
-      <div class="mb-12 rounded-lg overflow-hidden shadow-2xl bg-gray-800">
-        <div class="aspect-video bg-gray-700 flex items-center justify-center">
+      <div class="mb-12 rounded-lg overflow-hidden shadow-2xl bg-white dark:bg-gray-800">
+        <div class="aspect-video bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
           <video 
             controls 
             class="w-full h-full"
@@ -60,159 +64,159 @@ import "../../styles/global.css";
 
       <!-- Project Description -->
       <section class="mb-12">
-        <h2 class="text-3xl font-bold mb-6 text-blue-400">Project Overview</h2>
-        <div class="prose prose-invert prose-lg max-w-none">
-          <p class="text-gray-300 mb-4">
+        <h2 class="text-3xl font-bold mb-6 text-blue-600 dark:text-blue-400">Project Overview</h2>
+        <div class="prose dark:prose-invert prose-lg max-w-none">
+          <p class="text-gray-700 dark:text-gray-300 mb-4">
             A web application that simulates a friendly cashier experience for Maro's Coffee shop using AI-powered conversation.
             The chatbot interacts with customers, takes orders, provides menu information, and handles the complete ordering process
             through natural language conversations.
           </p>
           
-          <h3 class="text-2xl font-semibold mt-8 mb-4 text-purple-400">Key Features</h3>
-          <ul class="space-y-2 text-gray-300">
+          <h3 class="text-2xl font-semibold mt-8 mb-4 text-purple-600 dark:text-purple-400">Key Features</h3>
+          <ul class="space-y-2 text-gray-700 dark:text-gray-300">
             <li class="flex items-start">
-              <span class="text-blue-400 mr-2">•</span>
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
               <span><strong>AI-Powered Conversations:</strong> Google Gemini API integration for natural, friendly cashier interactions</span>
             </li>
             <li class="flex items-start">
-              <span class="text-blue-400 mr-2">•</span>
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
               <span><strong>Dynamic Menu System:</strong> Professional drink menu with types, sizes, and prices loaded from database</span>
             </li>
             <li class="flex items-start">
-              <span class="text-blue-400 mr-2">•</span>
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
               <span><strong>Session-Based Tracking:</strong> Customer session management for personalized ordering experience</span>
             </li>
             <li class="flex items-start">
-              <span class="text-blue-400 mr-2">•</span>
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
               <span><strong>Token Management:</strong> Intelligent conversation context management with token counting</span>
             </li>
             <li class="flex items-start">
-              <span class="text-blue-400 mr-2">•</span>
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
               <span><strong>Visual Menu Display:</strong> Dynamic image loading from Unsplash based on drink names</span>
             </li>
             <li class="flex items-start">
-              <span class="text-blue-400 mr-2">•</span>
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
               <span><strong>Real-Time Chat:</strong> Interactive chat interface with AI responses and order confirmation</span>
             </li>
           </ul>
 
-          <h3 class="text-2xl font-semibold mt-8 mb-4 text-purple-400">Technical Stack</h3>
+          <h3 class="text-2xl font-semibold mt-8 mb-4 text-purple-600 dark:text-purple-400">Technical Stack</h3>
           <div class="flex flex-wrap gap-2 mb-6">
-            <span class="px-3 py-1 bg-blue-500/20 text-blue-300 rounded-full text-sm">Django</span>
-            <span class="px-3 py-1 bg-blue-500/20 text-blue-300 rounded-full text-sm">Python</span>
-            <span class="px-3 py-1 bg-blue-500/20 text-blue-300 rounded-full text-sm">MongoDB</span>
-            <span class="px-3 py-1 bg-blue-500/20 text-blue-300 rounded-full text-sm">Google Gemini AI</span>
-            <span class="px-3 py-1 bg-blue-500/20 text-blue-300 rounded-full text-sm">HTML/CSS/JavaScript</span>
-            <span class="px-3 py-1 bg-blue-500/20 text-blue-300 rounded-full text-sm">SQLite</span>
+            <span class="px-3 py-1 bg-blue-500/10 dark:bg-blue-500/20 text-blue-700 dark:text-blue-300 rounded-full text-sm">Django</span>
+            <span class="px-3 py-1 bg-blue-500/10 dark:bg-blue-500/20 text-blue-700 dark:text-blue-300 rounded-full text-sm">Python</span>
+            <span class="px-3 py-1 bg-blue-500/10 dark:bg-blue-500/20 text-blue-700 dark:text-blue-300 rounded-full text-sm">MongoDB</span>
+            <span class="px-3 py-1 bg-blue-500/10 dark:bg-blue-500/20 text-blue-700 dark:text-blue-300 rounded-full text-sm">Google Gemini AI</span>
+            <span class="px-3 py-1 bg-blue-500/10 dark:bg-blue-500/20 text-blue-700 dark:text-blue-300 rounded-full text-sm">HTML/CSS/JavaScript</span>
+            <span class="px-3 py-1 bg-blue-500/10 dark:bg-blue-500/20 text-blue-700 dark:text-blue-300 rounded-full text-sm">SQLite</span>
           </div>
 
-          <h3 class="text-2xl font-semibold mt-8 mb-4 text-purple-400">System Architecture</h3>
-          <p class="text-gray-300 mb-4">
+          <h3 class="text-2xl font-semibold mt-8 mb-4 text-purple-600 dark:text-purple-400">System Architecture</h3>
+          <p class="text-gray-700 dark:text-gray-300 mb-4">
             Full-stack Django application with intelligent AI integration and database-driven menu management:
           </p>
-          <ul class="space-y-2 text-gray-300">
+          <ul class="space-y-2 text-gray-700 dark:text-gray-300">
             <li class="flex items-start">
-              <span class="text-blue-400 mr-2">•</span>
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
               <span><strong>Django Framework:</strong> MVC architecture with robust URL routing and template rendering</span>
             </li>
             <li class="flex items-start">
-              <span class="text-blue-400 mr-2">•</span>
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
               <span><strong>Database Models:</strong> DrinkType, Customer, and ChatMessage models with proper relationships</span>
             </li>
             <li class="flex items-start">
-              <span class="text-blue-400 mr-2">•</span>
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
               <span><strong>AI Integration:</strong> Google Gemini API for generating context-aware, friendly responses</span>
             </li>
             <li class="flex items-start">
-              <span class="text-blue-400 mr-2">•</span>
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
               <span><strong>Session Management:</strong> Django sessions for tracking customer interactions and orders</span>
             </li>
             <li class="flex items-start">
-              <span class="text-blue-400 mr-2">•</span>
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
               <span><strong>Frontend Interface:</strong> Responsive web interface with chat bubbles and menu display</span>
             </li>
           </ul>
 
-          <h3 class="text-2xl font-semibold mt-8 mb-4 text-purple-400">Database Models</h3>
-          <ul class="space-y-2 text-gray-300">
+          <h3 class="text-2xl font-semibold mt-8 mb-4 text-purple-600 dark:text-purple-400">Database Models</h3>
+          <ul class="space-y-2 text-gray-700 dark:text-gray-300">
             <li class="flex items-start">
-              <span class="text-blue-400 mr-2">•</span>
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
               <span><strong>DrinkType:</strong> Stores drink names, sizes (Small/Medium/Large), and corresponding prices</span>
             </li>
             <li class="flex items-start">
-              <span class="text-blue-400 mr-2">•</span>
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
               <span><strong>Customer:</strong> Tracks customers via session keys for personalized experience</span>
             </li>
             <li class="flex items-start">
-              <span class="text-blue-400 mr-2">•</span>
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
               <span><strong>ChatMessage:</strong> Stores complete conversation history with token counts for context management</span>
             </li>
           </ul>
 
-          <h3 class="text-2xl font-semibold mt-8 mb-4 text-purple-400">AI Chat Capabilities</h3>
-          <ul class="space-y-2 text-gray-300">
+          <h3 class="text-2xl font-semibold mt-8 mb-4 text-purple-600 dark:text-purple-400">AI Chat Capabilities</h3>
+          <ul class="space-y-2 text-gray-700 dark:text-gray-300">
             <li class="flex items-start">
-              <span class="text-blue-400 mr-2">•</span>
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
               <span><strong>Natural Order Taking:</strong> Understands drink preferences, sizes, and customizations</span>
             </li>
             <li class="flex items-start">
-              <span class="text-blue-400 mr-2">•</span>
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
               <span><strong>Menu Assistance:</strong> Provides information about available drinks, sizes, and prices</span>
             </li>
             <li class="flex items-start">
-              <span class="text-blue-400 mr-2">•</span>
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
               <span><strong>Order Confirmation:</strong> Summarizes orders and confirms details before finalizing</span>
             </li>
             <li class="flex items-start">
-              <span class="text-blue-400 mr-2">•</span>
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
               <span><strong>Context Awareness:</strong> Maintains conversation context across multiple interactions</span>
             </li>
             <li class="flex items-start">
-              <span class="text-blue-400 mr-2">•</span>
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
               <span><strong>Friendly Personality:</strong> Simulates a cheerful, helpful coffee shop cashier</span>
             </li>
           </ul>
 
-          <h3 class="text-2xl font-semibold mt-8 mb-4 text-purple-400">Setup & Deployment</h3>
-          <ul class="space-y-2 text-gray-300">
+          <h3 class="text-2xl font-semibold mt-8 mb-4 text-purple-600 dark:text-purple-400">Setup & Deployment</h3>
+          <ul class="space-y-2 text-gray-700 dark:text-gray-300">
             <li class="flex items-start">
-              <span class="text-blue-400 mr-2">•</span>
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
               <span><strong>Environment Setup:</strong> Virtual environment with pip dependencies from requirements.txt</span>
             </li>
             <li class="flex items-start">
-              <span class="text-blue-400 mr-2">•</span>
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
               <span><strong>API Configuration:</strong> Google Gemini API key setup for AI responses</span>
             </li>
             <li class="flex items-start">
-              <span class="text-blue-400 mr-2">•</span>
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
               <span><strong>Database Migration:</strong> Django migrations for model setup</span>
             </li>
             <li class="flex items-start">
-              <span class="text-blue-400 mr-2">•</span>
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
               <span><strong>Development Server:</strong> Run locally at http://127.0.0.1:8000/</span>
             </li>
             <li class="flex items-start">
-              <span class="text-blue-400 mr-2">•</span>
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
               <span><strong>Menu Management:</strong> Dynamic drink database with easy updates</span>
             </li>
           </ul>
 
-          <h3 class="text-2xl font-semibold mt-8 mb-4 text-purple-400">User Experience</h3>
-          <ul class="space-y-2 text-gray-300">
+          <h3 class="text-2xl font-semibold mt-8 mb-4 text-purple-600 dark:text-purple-400">User Experience</h3>
+          <ul class="space-y-2 text-gray-700 dark:text-gray-300">
             <li class="flex items-start">
-              <span class="text-blue-400 mr-2">•</span>
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
               <span><strong>Visual Appeal:</strong> Professional coffee shop interface with appetizing drink images</span>
             </li>
             <li class="flex items-start">
-              <span class="text-blue-400 mr-2">•</span>
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
               <span><strong>Intuitive Chat:</strong> Simple chat interface for natural conversations</span>
             </li>
             <li class="flex items-start">
-              <span class="text-blue-400 mr-2">•</span>
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
               <span><strong>Menu Visibility:</strong> Clear display of all drink options and pricing</span>
             </li>
             <li class="flex items-start">
-              <span class="text-blue-400 mr-2">•</span>
+              <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
               <span><strong>Responsive Design:</strong> Works seamlessly on desktop and mobile devices</span>
             </li>
           </ul>
