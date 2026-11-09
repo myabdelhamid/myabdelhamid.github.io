@@ -10,7 +10,7 @@ export const siteConfig = {
     github: "https://github.com/myabdelhamid",
   },
   aboutMe:
-    "AI engineer based in Berlin with an MSc in AI/Software Engineering (thesis graded \"Excellent\") who builds working systems end to end: a radar-augmented vision-language model for autonomous driving in extreme weather, and Amtsbrief, a live AI app that turns German official letters into checked deadlines and plain-English explanations. I combine hands-on LLM and VLM engineering (RAG, prompt engineering, quantization, evaluation) with consulting skills from pre-sales and client work: technical discovery, demos, proofs of concept and workshops. I explain trade-offs clearly to non-technical people and build the proof to back them up.",
+    "AI engineer based in Berlin with an MSc in AI/Software Engineering (thesis graded \"Excellent\") who builds working systems end to end: a radar-augmented vision-language model for autonomous driving in extreme weather, and Amtsbrief, a live AI app that turns German official letters into checked deadlines and plain-English explanations. I combine hands-on LLM and VLM engineering (RAG, prompt engineering, quantization, evaluation) with consulting skills from client work: technical discovery, demos and proofs of concept. I explain trade-offs clearly to non-technical people and build the proof to back them up.",
   skills: [
     "Vision-Language Models",
     "LLM/VLM Evaluation",
@@ -38,14 +38,13 @@ export const siteConfig = {
     "Git",
     "Technical Discovery",
     "Demos & PoCs",
-    "Workshops",
   ],
   languages: ["English (C1)", "Arabic (Native)", "German (B2)"],
   projects: [
     {
       name: "StormVLM - Radar-Augmented VLM for Extreme Weather",
       description:
-        "MSc thesis (graded \"Excellent\"): a framework that adds radar to camera input so a vision-language model can reason about driving scenes in extreme weather. Evaluated with pairwise LLM-as-judge comparisons: 91.9% modality win rate and 89.5% format win rate. arXiv preprint in preparation.",
+        "MSc thesis (graded \"Excellent\"): a framework that adds radar to camera input so a vision-language model can reason about driving scenes in extreme weather. Reaching 89.6% object coverage in extreme foggy street with zero missed hazards across 50 unique scenes.",
       skills: ["Python", "Vision-Language Models", "Sensor Fusion", "LLM-as-Judge"],
     },
     {
