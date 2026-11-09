@@ -34,6 +34,15 @@ import { siteConfig } from "../config";
             }
           </div>
         </div>
+
+        {
+          siteConfig.languages && siteConfig.languages.length > 0 && (
+            <p class="text-base sm:text-lg text-gray-600">
+              <span class="font-bold text-gray-900">Languages:</span>{" "}
+              {siteConfig.languages.join(" · ")}
+            </p>
+          )
+        }
       </div>
     </div>
   </div>
