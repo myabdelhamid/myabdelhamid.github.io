@@ -55,12 +55,6 @@ export const siteConfig = {
       skills: ["FastAPI", "Google Gemini", "Google Cloud", "pytest"],
     },
     {
-      name: "Quantized Qwen2.5-VL 7B on Hugging Face",
-      description:
-        "Qwen2.5-VL 7B quantized to 3-bit with MLX for efficient local inference",
-      skills: ["MLX", "Hugging Face", "Quantization"],
-    },
-    {
       name: "Agentic HybridRAG Knowledge Engine",
       description:
         "Production-grade Retrieval-Augmented Generation system combining vector search, knowledge graphs, and intelligent agentic reasoning with local LLMs",
@@ -86,17 +80,9 @@ export const siteConfig = {
     {
       company: "Kenza GmbH",
       title: "AI Solutions Architect (Freelance)",
-      dateRange: "Feb 2026 – Present · Remote",
+      dateRange: "Feb 2026 – Apr 2026 · Remote",
       bullets: [
         "Designed the technical blueprint for a RAG chatbot using Gemini and ChromaDB",
-      ],
-    },
-    {
-      company: "Talk2Move",
-      title: "Street Fundraiser",
-      dateRange: "Feb 2026 – Aug 2026 · Berlin",
-      bullets: [
-        "Held daily face-to-face conversations with the public, explaining an offer and handling objections",
       ],
     },
     {
