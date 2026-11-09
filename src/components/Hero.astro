@@ -130,24 +130,39 @@ import { siteConfig } from "../config";
       stroke-width={0}></rect>
   </svg>
   <div class="h-full mx-auto p-8 sm:p-12 md:p-24 flex items-center">
-    <div>
-      <h2
-        class="text-pretty text-xl sm:text-2xl md:text-5xl font-bold tracking-tight text-gray-700 animate-fade-in"
-      >
-        Hello! 👋
-      </h2>
-      <h1
-        class="mt-6 sm:mt-8 md:mt-10 text-pretty text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-bold tracking-tight text-gray-800 animate-fade-in animation-delay-200"
-      >
-        I'm <span style={{ color: siteConfig.accentColor }}
-          >{siteConfig.name}</span
+    <div class="flex flex-col md:flex-row items-center md:items-center gap-8 md:gap-12 w-full">
+      <!-- Profile Photo -->
+      <div class="flex-shrink-0 animate-fade-in">
+        <div class="relative w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64 lg:w-72 lg:h-72">
+          <div class="absolute inset-0 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 opacity-20 blur-xl"></div>
+          <img
+            src="/IMG_5227.JPG"
+            alt={siteConfig.name}
+            class="relative w-full h-full rounded-full object-cover border-4 border-white shadow-2xl"
+          />
+        </div>
+      </div>
+      
+      <!-- Text Content -->
+      <div class="flex-1 text-center md:text-left">
+        <h2
+          class="text-pretty text-xl sm:text-2xl md:text-5xl font-bold tracking-tight text-gray-700 animate-fade-in animation-delay-200"
         >
-      </h1>
-      <p
-        class="mt-4 sm:mt-6 md:mt-8 text-pretty text-base sm:text-lg md:text-xl/8 font-medium text-gray-600 animate-fade-in animation-delay-400"
-      >
-        {siteConfig.title}
-      </p>
+          Hello!
+        </h2>
+        <h1
+          class="mt-6 sm:mt-8 md:mt-10 text-pretty text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-bold tracking-tight text-gray-800 animate-fade-in animation-delay-400"
+        >
+          I'm <span style={{ color: siteConfig.accentColor }}
+            >{siteConfig.name}</span
+          >
+        </h1>
+        <p
+          class="mt-4 sm:mt-6 md:mt-8 text-pretty text-base sm:text-lg md:text-xl/8 font-medium text-gray-600 animate-fade-in animation-delay-600"
+        >
+          {siteConfig.title}
+        </p>
+      </div>
     </div>
   </div>
   <div
@@ -213,12 +228,12 @@ import { siteConfig } from "../config";
       )
     }
     {
-      siteConfig.social?.twitter && (
+      siteConfig.social?.upwork && (
         <a
-          href={siteConfig.social.twitter}
+          href={siteConfig.social.upwork}
           target="_blank"
           rel="noopener noreferrer"
-          aria-label="Twitter"
+          aria-label="Upwork"
           class="transition-colors duration-300 hover:text-[var(--accent-color)]"
         >
           <svg
@@ -226,18 +241,10 @@ import { siteConfig } from "../config";
             width="24"
             height="24"
             viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            fill="currentColor"
             class="h-6 w-6 sm:h-7 sm:w-7 md:h-8 md:w-8"
           >
-            <>
-              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-              <path d="M4 4l11.733 16h4.267l-11.733 -16z" />
-              <path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772" />
-            </>
+            <path d="M18.561 13.158c-1.102 0-2.135-.467-3.074-1.227l.228-1.076.008-.042c.207-1.143.849-3.06 2.839-3.06 1.492 0 2.703 1.212 2.703 2.703-.001 1.489-1.212 2.702-2.704 2.702zm0-8.14c-2.539 0-4.51 1.649-5.31 4.366-1.22-1.834-2.148-4.036-2.687-5.892H7.828v7.112c-.002 1.406-1.141 2.546-2.547 2.548-1.405-.002-2.543-1.143-2.545-2.548V3.492H0v7.112c0 2.914 2.37 5.303 5.281 5.303 2.913 0 5.283-2.389 5.283-5.303v-1.19c.529 1.107 1.182 2.229 1.974 3.221l-1.673 7.873h2.797l1.213-5.71c1.063.679 2.285 1.109 3.686 1.109 3 0 5.439-2.452 5.439-5.45 0-3-2.439-5.439-5.439-5.439z"/>
           </svg>
         </a>
       )

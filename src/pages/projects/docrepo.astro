@@ -1,0 +1,305 @@
+---
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import { siteConfig } from "../../config";
+import "../../styles/global.css";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content="Enterprise Document Management System with AI-powered classification" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap"
+      rel="stylesheet"
+    />
+    <title>DocRepo - AI-Powered Document Management - {siteConfig.name}</title>
+  </head>
+  <body class="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-gray-100 min-h-screen">
+    
+    <main class="container mx-auto px-4 py-16 max-w-4xl">
+      <!-- Back Button -->
+      <a 
+        href="/" 
+        class="inline-flex items-center text-blue-400 hover:text-blue-300 mb-8 transition-colors"
+      >
+        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+        </svg>
+        Back to Portfolio
+      </a>
+
+      <!-- Project Header -->
+      <div class="mb-12">
+        <h1 class="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+          DocRepo - Document Classification System
+        </h1>
+        <p class="text-xl text-gray-300">
+          Full-stack enterprise document management system with integrated AI-powered multi-class document classification
+        </p>
+      </div>
+
+      <!-- Video Section -->
+      <div class="mb-12 rounded-lg overflow-hidden shadow-2xl bg-gray-800">
+        <div class="aspect-video bg-gray-700 flex items-center justify-center">
+          <video 
+            controls 
+            class="w-full h-full"
+          >
+            <source src="/docex-document-classifier.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        </div>
+      </div>
+
+      <!-- Project Description -->
+      <section class="mb-12">
+        <h2 class="text-3xl font-bold mb-6 text-blue-400">Project Overview</h2>
+        <div class="prose prose-invert prose-lg max-w-none">
+          <p class="text-gray-300 mb-4">
+            A unified enterprise document management platform combining DocRepo (document repository with version control) 
+            and DocEx (AI-powered multi-class document classification). The system automatically categorizes documents into 
+            4 categories with 100% accuracy using Random Forest ML models.
+          </p>
+          
+          <h3 class="text-2xl font-semibold mt-8 mb-4 text-purple-400">Key Features</h3>
+          <ul class="space-y-2 text-gray-300">
+            <li class="flex items-start">
+              <span class="text-blue-400 mr-2">•</span>
+              <span><strong>AI-Powered Classification:</strong> Auto-classifies documents into Emails, Invoices, Financial Statements, Resumes with 100% accuracy</span>
+            </li>
+            <li class="flex items-start">
+              <span class="text-blue-400 mr-2">•</span>
+              <span><strong>Advanced Document Versioning:</strong> Full audit trail with document history, automatic version control, and rollback capabilities</span>
+            </li>
+            <li class="flex items-start">
+              <span class="text-blue-400 mr-2">•</span>
+              <span><strong>Enterprise User Management:</strong> Role-based access control (Administrator, Manager, Employee, Guest) with department organization</span>
+            </li>
+            <li class="flex items-start">
+              <span class="text-blue-400 mr-2">•</span>
+              <span><strong>Multi-Format OCR Support:</strong> Processes PDFs, images (PNG, JPG, TIFF, BMP, GIF) and scanned documents with Tesseract OCR</span>
+            </li>
+            <li class="flex items-start">
+              <span class="text-blue-400 mr-2">•</span>
+              <span><strong>Docker Containerization:</strong> Complete Docker support with production and development environments, one-command setup</span>
+            </li>
+            <li class="flex items-start">
+              <span class="text-blue-400 mr-2">•</span>
+              <span><strong>Production Optimized:</strong> FastAPI backend with ~200ms authentication, PostgreSQL with foreign key constraints, React 19 frontend</span>
+            </li>
+          </ul>
+
+          <h3 class="text-2xl font-semibold mt-8 mb-4 text-purple-400">Technical Stack</h3>
+          <div class="flex flex-wrap gap-2 mb-6">
+            <span class="px-3 py-1 bg-blue-500/20 text-blue-300 rounded-full text-sm">Python</span>
+            <span class="px-3 py-1 bg-blue-500/20 text-blue-300 rounded-full text-sm">Javascript</span>
+            <span class="px-3 py-1 bg-blue-500/20 text-blue-300 rounded-full text-sm">FastAPI</span>
+            <span class="px-3 py-1 bg-blue-500/20 text-blue-300 rounded-full text-sm">React</span>
+            <span class="px-3 py-1 bg-blue-500/20 text-blue-300 rounded-full text-sm">PostgreSQL</span>
+            <span class="px-3 py-1 bg-blue-500/20 text-blue-300 rounded-full text-sm">Docker</span>
+            <span class="px-3 py-1 bg-blue-500/20 text-blue-300 rounded-full text-sm">Scikit-learn</span>
+            <span class="px-3 py-1 bg-blue-500/20 text-blue-300 rounded-full text-sm">Tesseract OCR</span>
+          </div>
+
+          <h3 class="text-2xl font-semibold mt-8 mb-4 text-purple-400">AI Classification Performance</h3>
+          <p class="text-gray-300 mb-4">
+            The DocEx ML system demonstrates exceptional accuracy across all document types:
+          </p>
+          <ul class="space-y-2 text-gray-300">
+            <li class="flex items-start">
+              <span class="text-blue-400 mr-2">•</span>
+              <span><strong>Overall Accuracy:</strong> 100% on balanced datasets with Random Forest classifier</span>
+            </li>
+            <li class="flex items-start">
+              <span class="text-blue-400 mr-2">•</span>
+              <span><strong>Feature Engineering:</strong> 40+ discriminative features extracted for precise classification</span>
+            </li>
+            <li class="flex items-start">
+              <span class="text-blue-400 mr-2">•</span>
+              <span><strong>Real-World Datasets:</strong> Trained on actual Kaggle datasets (200 emails, 100 invoices, 91 financial statements, 67 resumes)</span>
+            </li>
+            <li class="flex items-start">
+              <span class="text-blue-400 mr-2">•</span>
+              <span><strong>Classification Speed:</strong> ~15ms for text classification, ~1.2s for document upload with OCR</span>
+            </li>
+            <li class="flex items-start">
+              <span class="text-blue-400 mr-2">•</span>
+              <span><strong>Balanced Training:</strong> Equal representation of all document types (67 samples per class) prevents bias</span>
+            </li>
+          </ul>
+
+          <h3 class="text-2xl font-semibold mt-8 mb-4 text-purple-400">System Architecture</h3>
+          <p class="text-gray-300 mb-4">
+            Integrated two-tier architecture with seamless communication between document management and AI classification:
+          </p>
+          <ul class="space-y-2 text-gray-300">
+            <li class="flex items-start">
+              <span class="text-blue-400 mr-2">•</span>
+              <span><strong>DocRepo Frontend:</strong> React 19 with Material-UI, responsive design, drag-and-drop upload</span>
+            </li>
+            <li class="flex items-start">
+              <span class="text-blue-400 mr-2">•</span>
+              <span><strong>DocRepo Backend:</strong> FastAPI with SQLAlchemy ORM, JWT authentication, role-based permissions</span>
+            </li>
+            <li class="flex items-start">
+              <span class="text-blue-400 mr-2">•</span>
+              <span><strong>DocEx AI Service:</strong> FastAPI REST service with Random Forest model, Tesseract OCR, spaCy NLP</span>
+            </li>
+            <li class="flex items-start">
+              <span class="text-blue-400 mr-2">•</span>
+              <span><strong>Database Layer:</strong> PostgreSQL with complex relationships, foreign key constraints, cascade deletion</span>
+            </li>
+            <li class="flex items-start">
+              <span class="text-blue-400 mr-2">•</span>
+              <span><strong>Integration Flow:</strong> Upload → OCR/Text Extraction → Feature Engineering → ML Classification → Auto-tagging</span>
+            </li>
+          </ul>
+
+          <h3 class="text-2xl font-semibold mt-8 mb-4 text-purple-400">Key ML Features</h3>
+          <ul class="space-y-2 text-gray-300">
+            <li class="flex items-start">
+              <span class="text-blue-400 mr-2">•</span>
+              <span><strong>Email Detection:</strong> Email patterns, headers, signatures, greeting detection</span>
+            </li>
+            <li class="flex items-start">
+              <span class="text-blue-400 mr-2">•</span>
+              <span><strong>Invoice Recognition:</strong> Invoice numbers, seller info, itemized lists, total amounts</span>
+            </li>
+            <li class="flex items-start">
+              <span class="text-blue-400 mr-2">•</span>
+              <span><strong>Financial Statement Analysis:</strong> Accounting terms, transaction patterns, financial vocabulary</span>
+            </li>
+            <li class="flex items-start">
+              <span class="text-blue-400 mr-2">•</span>
+              <span><strong>Resume Parsing:</strong> Education sections, work experience, skills, career objectives</span>
+            </li>
+            <li class="flex items-start">
+              <span class="text-blue-400 mr-2">•</span>
+              <span><strong>Named Entity Recognition:</strong> Person, organization, date, and money entity detection</span>
+            </li>
+          </ul>
+
+          <h3 class="text-2xl font-semibold mt-8 mb-4 text-purple-400">Deployment & Scalability</h3>
+          <ul class="space-y-2 text-gray-300">
+            <li class="flex items-start">
+              <span class="text-blue-400 mr-2">•</span>
+              <span><strong>Docker Compose:</strong> Full containerization with orchestration, volume persistence, health checks</span>
+            </li>
+            <li class="flex items-start">
+              <span class="text-blue-400 mr-2">•</span>
+              <span><strong>Production Ready:</strong> Optimized for enterprise deployment with security, monitoring, backups</span>
+            </li>
+            <li class="flex items-start">
+              <span class="text-blue-400 mr-2">•</span>
+              <span><strong>REST APIs:</strong> Comprehensive API endpoints for integration with other systems</span>
+            </li>
+            <li class="flex items-start">
+              <span class="text-blue-400 mr-2">•</span>
+              <span><strong>Scalable Architecture:</strong> Modular design supports microservices, caching, load balancing</span>
+            </li>
+          </ul>
+
+          <h3 class="text-2xl font-semibold mt-8 mb-4 text-purple-400">Business Benefits</h3>
+          <ul class="space-y-2 text-gray-300">
+            <li class="flex items-start">
+              <span class="text-blue-400 mr-2">•</span>
+              <span>Reduces manual document classification work by 90%</span>
+            </li>
+            <li class="flex items-start">
+              <span class="text-blue-400 mr-2">•</span>
+              <span>Enables smart search and filtering by document type</span>
+            </li>
+            <li class="flex items-start">
+              <span class="text-blue-400 mr-2">•</span>
+              <span>Provides complete audit trails for compliance requirements</span>
+            </li>
+            <li class="flex items-start">
+              <span class="text-blue-400 mr-2">•</span>
+              <span>Auto-tagging improves document organization and retrieval</span>
+            </li>
+            <li class="flex items-start">
+              <span class="text-blue-400 mr-2">•</span>
+              <span>Role-based access control ensures data security and privacy</span>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Links Section -->
+      <section class="flex flex-wrap gap-4">
+        <a 
+          href="https://github.com/myabdelhamid/DocRepo" 
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors shadow-lg"
+        >
+          <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+          </svg>
+          View DocRepo on GitHub
+        </a>
+        <a 
+          href="https://github.com/myabdelhamid/DocEx" 
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors shadow-lg"
+        >
+          <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+          </svg>
+          View DocEx on GitHub
+        </a>
+      </section>
+    </main>
+    <!-- Scroll to Top Button -->
+    <button
+      id="scrollToTop"
+      class="fixed bottom-8 right-8 w-12 h-12 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-lg transition-all duration-300 opacity-0 pointer-events-none flex items-center justify-center z-50"
+      aria-label="Scroll to top"
+    >
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+      </svg>
+    </button>
+    <Footer />
+  </body>
+</html>
+
+<style>
+  body {
+    font-family: 'IBM Plex Mono', monospace;
+  }
+
+  #scrollToTop.show {
+    opacity: 1;
+    pointer-events: auto;
+  }
+</style>
+
+<script>
+  const scrollToTopBtn = document.getElementById('scrollToTop');
+  
+  // Show button when user scrolls down
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 300) {
+      scrollToTopBtn?.classList.add('show');
+    } else {
+      scrollToTopBtn?.classList.remove('show');
+    }
+  });
+  
+  // Scroll to top when button is clicked
+  scrollToTopBtn?.addEventListener('click', () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  });
+</script>
