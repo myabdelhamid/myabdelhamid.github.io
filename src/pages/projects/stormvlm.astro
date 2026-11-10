@@ -1,0 +1,621 @@
+---
+import ThemeHead from "../../components/ThemeHead.astro";
+import ThemeToggle from "../../components/ThemeToggle.astro";
+import Footer from "../../components/Footer.astro";
+import { siteConfig } from "../../config";
+import "../../styles/global.css";
+
+// ---------- Contrast decay chart (Koschmieder: C(d) = C0 · e^(−βd)) ----------
+const weather = [
+  { key: "cd", name: "Clear", beta: 0.00021, limit: null, color: "var(--sv-1)" },
+  { key: "hrd", name: "Heavy rain", beta: 0.01535, limit: 120.0, color: "var(--sv-2)" },
+  { key: "fd", name: "Fog", beta: 0.03253, limit: 32.5, color: "var(--sv-3)" },
+  { key: "fhrd", name: "Fog + rain", beta: 0.03014, limit: 20.6, color: "var(--sv-4)" },
+];
+const decay = { w: 440, h: 250, l: 44, r: 24, t: 16, b: 34, maxD: 200 };
+const dx = (d: number) => decay.l + (d / decay.maxD) * (decay.w - decay.l - decay.r);
+const dy = (c: number) => decay.t + (1 - c) * (decay.h - decay.t - decay.b);
+const decayPaths = weather.map((wx) => {
+  const pts: string[] = [];
+  for (let d = 0; d <= decay.maxD; d += 2) pts.push(`${dx(d).toFixed(1)},${dy(Math.exp(-wx.beta * d)).toFixed(1)}`);
+  return { ...wx, d: `M${pts.join("L")}` };
+});
+const decayLabels = [
+  { key: "cd", text: "Clear: almost no decay", x: dx(120), y: dy(Math.exp(-0.00021 * 120)) - 8, anchor: "middle" },
+  { key: "hrd", text: "Heavy rain", x: dx(70) + 4, y: dy(Math.exp(-0.01535 * 70)) - 8, anchor: "start" },
+  { key: "fog", text: "Fog, Fog + rain", x: dx(3), y: dy(0.05), anchor: "start" },
+];
+const xTicks = [0, 50, 100, 150, 200];
+const yTicks = [0, 0.25, 0.5, 0.75, 1];
+
+// ---------- Visibility limit bars ----------
+const limitMax = 140;
+
+// ---------- Radar schematic (deterministic pseudo-random points) ----------
+let seed = 7;
+const rand = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
+const clusters = [
+  { id: "A1", label: "Vehicle ahead", cx: 200, cy: 62, r: 16, n: 14, vx: 0, vy: 16 },
+  { id: "A2", label: "Cut-in", cx: 132, cy: 104, r: 14, n: 11, vx: 18, vy: 6 },
+  { id: "A3", label: "Pedestrian", cx: 286, cy: 128, r: 9, n: 7, vx: -12, vy: 0 },
+  { id: "A4", label: "Vehicle behind", cx: 200, cy: 262, r: 14, n: 10, vx: 0, vy: -10 },
+];
+const clusterPts = clusters.flatMap((c) =>
+  Array.from({ length: c.n }, () => {
+    const a = rand() * Math.PI * 2;
+    const rr = Math.sqrt(rand()) * c.r * 0.75;
+    return { x: c.cx + Math.cos(a) * rr, y: c.cy + Math.sin(a) * rr };
+  }),
+);
+const noisePts = Array.from({ length: 26 }, () => ({ x: 20 + rand() * 360, y: 14 + rand() * 272 })).filter(
+  (p) => clusters.every((c) => Math.hypot(p.x - c.cx, p.y - c.cy) > c.r + 10) && Math.hypot(p.x - 200, p.y - 190) > 34,
+);
+// 6 radars around the ego vehicle (centre 200,190): [x, y, heading in degrees, 0 = up]
+const radars = [
+  [200, 168, 0], [184, 172, -55], [216, 172, 55],
+  [200, 212, 180], [184, 208, -125], [216, 208, 125],
+];
+const wedge = (x: number, y: number, h: number) => {
+  const R = 120, half = 30;
+  const p = (deg: number) => {
+    const rad = ((deg - 90) * Math.PI) / 180;
+    return `${(x + Math.cos(rad) * R).toFixed(1)},${(y + Math.sin(rad) * R).toFixed(1)}`;
+  };
+  return `M${x},${y} L${p(h - half)} A${R},${R} 0 0 1 ${p(h + half)} Z`;
+};
+
+// ---------- Ablation results (exact matches with the RSS oracle, out of 50 frames) ----------
+const arms = [
+  { id: "A", name: "Radar + camera, JSON", exact: 44, note: "reference" },
+  { id: "B", name: "Camera only, JSON", exact: 43, note: "modality" },
+  { id: "D", name: "Radar only, JSON", exact: 42, note: "modality" },
+  { id: "C", name: "Radar + camera, prose", exact: 41, note: "representation" },
+];
+
+const stack = ["Python", "Qwen2.5-VL-7B (3-bit)", "MLX / mlx-vlm", "Apple Silicon", "NumPy (mmap)", "scikit-learn DBSCAN", "OpenCV (CLAHE)", "CARLA / OPV2V", "Responsibility-Sensitive Safety", "JSON-schema prompting"];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <ThemeHead />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content="StormVLM: a radar-augmented vision-language model for autonomous driving in extreme weather" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap"
+      rel="stylesheet"
+    />
+    <title>StormVLM - {siteConfig.name}</title>
+  </head>
+  <body class="bg-gradient-to-br from-gray-50 dark:from-gray-900 via-white dark:via-gray-800 to-gray-100 dark:to-gray-900 text-gray-900 dark:text-gray-100 min-h-screen">
+    <ThemeToggle />
+
+    <main class="container mx-auto px-4 py-16 max-w-4xl">
+      <a href="/" class="inline-flex items-center text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 mb-8 transition-colors">
+        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+        </svg>
+        Back to Portfolio
+      </a>
+
+      <!-- Header -->
+      <div class="mb-10">
+        <p class="text-sm uppercase tracking-widest text-purple-600 dark:text-purple-400 mb-3">Master's Thesis · Graded "Excellent"</p>
+        <h1 class="text-4xl md:text-5xl font-bold leading-tight pb-2 mb-2 bg-gradient-to-r from-blue-600 dark:from-blue-400 to-purple-600 dark:to-purple-400 bg-clip-text text-transparent">
+          StormVLM
+        </h1>
+        <p class="text-xl text-gray-700 dark:text-gray-300 mb-4">
+          A VLM-driven network for autonomous driving in extreme weather, with radar augmentation
+        </p>
+        <p class="text-sm text-gray-500 dark:text-gray-400">
+          GIU Berlin · Supervisor: Prof. Dr. Muhammad Shahzad
+        </p>
+      </div>
+
+      <!-- Hero stats -->
+      <section class="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mb-14">
+        {[
+          { v: "0", l: "missed hazards", s: "in every pipeline variant" },
+          { v: "0", l: "false emergency brakes", s: "across the 50-frame benchmark" },
+          { v: "49/49", l: "planner decisions", s: "valid, grounded JSON" },
+          { v: "8 GB", l: "memory budget", s: "3-bit Qwen2.5-VL-7B on Apple Silicon" },
+        ].map((t) => (
+          <div class="rounded-xl border border-gray-200 dark:border-gray-700 bg-white/70 dark:bg-gray-900/60 p-4 sm:p-5">
+            <div class="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-gray-100">{t.v}</div>
+            <div class="mt-1 text-sm font-semibold text-gray-800 dark:text-gray-200">{t.l}</div>
+            <div class="mt-1 text-xs text-gray-500 dark:text-gray-400">{t.s}</div>
+          </div>
+        ))}
+      </section>
+
+      <!-- Core idea -->
+      <section class="mb-14">
+        <h2 class="text-3xl font-bold mb-6 text-blue-600 dark:text-blue-400">The Core Idea</h2>
+        <div class="text-lg text-gray-700 dark:text-gray-300 space-y-4">
+          <p>
+            Cameras fail in fog for a physical reason: the geometry is never recorded. A vision-language model asked about a scene it
+            can't see doesn't say "I can't tell". It confidently describes an empty road.
+          </p>
+          <p>
+            StormVLM's answer is <strong class="text-gray-900 dark:text-gray-100">not a bigger model, but more physics</strong>: fuse 4D radar
+            into the scene, and make every perceptual claim the model makes <strong class="text-gray-900 dark:text-gray-100">checkable against physics</strong>.
+            Everything the model asserts about distance, speed or risk is either pre-computed in Python or verified by it afterwards.
+          </p>
+        </div>
+        <div class="mt-6 grid sm:grid-cols-3 gap-3">
+          {[
+            ["RQ1", "Does 4D radar fusion measurably reduce hallucination in zero-visibility weather?"],
+            ["RQ2", "Does a rigid JSON schema produce more reliable planning than free chain-of-thought?"],
+            ["RQ3", "Is sensor fusion a cheaper route to safety than scaling model parameters?"],
+          ].map(([k, q]) => (
+            <div class="rounded-lg border border-gray-200 dark:border-gray-700 bg-white/60 dark:bg-gray-900/40 p-4">
+              <div class="text-sm font-bold text-purple-600 dark:text-purple-400">{k}</div>
+              <div class="mt-1 text-sm text-gray-700 dark:text-gray-300">{q}</div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <!-- Architecture -->
+      <section class="mb-14">
+        <h2 class="text-3xl font-bold mb-2 text-blue-600 dark:text-blue-400">Architecture</h2>
+        <p class="text-gray-700 dark:text-gray-300 mb-6">Four sequential stages, from raw sensor data to a driving action.</p>
+        <div class="grid md:grid-cols-4 gap-3 items-stretch">
+          {[
+            { n: "1", t: "Load + Fuse", sub: "radar → anchors", kind: "Deterministic", items: ["4 cameras + 6 radars", "Zero-copy mmap I/O", "DBSCAN clustering"] },
+            { n: "2", t: "Perception", sub: "objects → category", kind: "VLM + Python", items: ["CLAHE fog contrast", "Radar anchoring", "Confirmed / Fogged / Ghost"] },
+            { n: "3", t: "Prediction", sub: "motion → risk", kind: "VLM + Python", items: ["Kinematics", "RSS safety gate", "Risk level per object"] },
+            { n: "4", t: "Planning", sub: "risk → action", kind: "VLM + Python", items: ["Decision call (JSON)", "Explanation call", "Keep / Decelerate / Brake"] },
+          ].map((s, i) => (
+            <div class="relative">
+              <div class="h-full rounded-xl border border-gray-200 dark:border-gray-700 bg-white/80 dark:bg-gray-900/70 p-4">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-bold text-blue-600 dark:text-blue-400">STAGE {s.n}</span>
+                  <span class={`text-[10px] px-2 py-0.5 rounded-full ${s.kind === "Deterministic" ? "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300" : "bg-purple-500/10 text-purple-700 dark:bg-purple-500/20 dark:text-purple-300"}`}>{s.kind}</span>
+                </div>
+                <div class="mt-2 text-lg font-bold text-gray-900 dark:text-gray-100">{s.t}</div>
+                <div class="text-xs text-gray-500 dark:text-gray-400 mb-3">{s.sub}</div>
+                <ul class="space-y-1 text-sm text-gray-700 dark:text-gray-300">
+                  {s.items.map((it) => <li class="flex items-start"><span class="text-blue-600 dark:text-blue-400 mr-2">•</span>{it}</li>)}
+                </ul>
+              </div>
+              {i < 3 && (
+                <div class="flex md:hidden justify-center py-1 text-gray-400 dark:text-gray-500" aria-hidden="true">↓</div>
+              )}
+              {i < 3 && (
+                <div class="hidden md:flex absolute top-1/2 -right-3 z-10 h-6 w-6 -translate-y-1/2 items-center justify-center rounded-full bg-blue-600 text-white text-xs shadow" aria-hidden="true">→</div>
+              )}
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <!-- Radar fusion -->
+      <section class="mb-14">
+        <h2 class="text-3xl font-bold mb-2 text-blue-600 dark:text-blue-400">From Six Radars to a Few Anchors</h2>
+        <p class="text-gray-700 dark:text-gray-300 mb-6">
+          Six radar point clouds are brought into the vehicle's frame, filtered, and clustered into a handful of <strong class="text-gray-900 dark:text-gray-100">Radar Anchors</strong>,
+          each with a position, speed, Doppler and confidence that the language model can reason over.
+        </p>
+        <div class="grid md:grid-cols-5 gap-6 items-center">
+          <figure class="md:col-span-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 p-3">
+            <svg viewBox="0 0 400 300" class="w-full h-auto" role="img" aria-labelledby="radar-title radar-desc">
+              <title id="radar-title">Radar fusion schematic</title>
+              <desc id="radar-desc">Top-down view: the ego vehicle with six radar fields of view; raw returns are clustered into four anchors while scattered noise is discarded.</desc>
+              <rect x="150" y="0" width="100" height="300" class="sv-road" />
+              <line x1="200" y1="0" x2="200" y2="300" class="sv-lane" />
+              {radars.map(([x, y, h]) => <path d={wedge(x, y, h)} class="sv-fov" />)}
+              {noisePts.map((p) => <circle cx={p.x} cy={p.y} r="2" class="sv-noise"><title>Noise return (discarded)</title></circle>)}
+              {clusters.map((c) => (
+                <g>
+                  <circle cx={c.cx} cy={c.cy} r={c.r + 5} class="sv-cluster" />
+                  <line x1={c.cx} y1={c.cy} x2={c.cx + c.vx} y2={c.cy + c.vy} class="sv-vec" marker-end="url(#sv-arrow)" />
+                </g>
+              ))}
+              {clusterPts.map((p) => <circle cx={p.x} cy={p.y} r="2.6" class="sv-pt" />)}
+              {clusters.map((c) => (
+                <g>
+                  <title>{`Anchor ${c.id}: ${c.label}`}</title>
+                  <text x={c.cx + c.r + 9} y={c.cy - c.r} class="sv-anchor-label">{c.id}</text>
+                  <circle cx={c.cx} cy={c.cy} r={c.r + 12} fill="transparent" />
+                </g>
+              ))}
+              <rect x="186" y="170" width="28" height="40" rx="6" class="sv-ego" />
+              <text x="200" y="194" text-anchor="middle" class="sv-ego-label">EGO</text>
+              <defs>
+                <marker id="sv-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                  <path d="M0,0 L10,5 L0,10 z" class="sv-vec-head" />
+                </marker>
+              </defs>
+            </svg>
+            <figcaption class="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs text-gray-600 dark:text-gray-400">
+              <span class="inline-flex items-center gap-1.5"><span class="inline-block h-2.5 w-2.5 rounded-full" style="background: var(--sv-1)"></span>Clustered return</span>
+              <span class="inline-flex items-center gap-1.5"><span class="inline-block h-2.5 w-2.5 rounded-full sv-noise-swatch"></span>Noise (discarded)</span>
+              <span class="inline-flex items-center gap-1.5"><span class="inline-block h-2.5 w-3 border border-dashed rounded-full" style="border-color: var(--sv-1)"></span>Radar Anchor</span>
+              <span class="text-gray-400 dark:text-gray-500">Schematic</span>
+            </figcaption>
+          </figure>
+          <ol class="md:col-span-2 space-y-4">
+            {[
+              ["Fuse", "6 sensors → one (N, 5) cloud [x, y, z, v, sensor], each transformed by its own extrinsics into the vehicle frame."],
+              ["Gate", "Keep returns within 200 m and ±3 m height."],
+              ["Cluster", "DBSCAN on the ground plane, ε = 0.6 m, min 3 points: 93.3% near-field recall against ground truth."],
+              ["Extract", "Centroid, max speed, mean Doppler, point count, the matching camera, and a confidence score."],
+            ].map(([k, v], i) => (
+              <li class="flex gap-3">
+                <span class="flex-none h-7 w-7 rounded-full bg-blue-600 text-white text-sm font-bold flex items-center justify-center">{i + 1}</span>
+                <div>
+                  <div class="font-semibold text-gray-900 dark:text-gray-100">{k}</div>
+                  <div class="text-sm text-gray-700 dark:text-gray-300">{v}</div>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      <!-- Visibility physics -->
+      <section class="mb-14">
+        <h2 class="text-3xl font-bold mb-2 text-blue-600 dark:text-blue-400">Measuring What the Camera Can Really See</h2>
+        <p class="text-gray-700 dark:text-gray-300 mb-2">
+          Using Koschmieder's law, contrast decays exponentially with distance: <code class="px-1.5 py-0.5 rounded bg-gray-100 dark:bg-gray-800 text-sm">C(d) = C₀ · e<sup>−βd</sup></code>.
+          Fitting the extinction coefficient β per weather condition turns "fog" into a measured, physical visibility limit.
+        </p>
+        <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">Clear weather is the built-in control: its β is effectively zero, so the decay in the other conditions is atmospheric.</p>
+
+        <div class="grid lg:grid-cols-2 gap-4 items-start">
+          <figure class="rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 p-4">
+            <figcaption class="mb-2">
+              <div class="font-semibold text-gray-900 dark:text-gray-100">Contrast remaining vs. distance</div>
+              <div class="text-xs text-gray-500 dark:text-gray-400">C / C₀ from the fitted β per weather</div>
+            </figcaption>
+            <svg viewBox={`0 0 ${decay.w} ${decay.h}`} class="w-full h-auto" role="img" aria-label="Line chart of contrast decay with distance for four weather conditions">
+              {yTicks.map((t) => (
+                <g>
+                  <line x1={decay.l} x2={decay.w - decay.r} y1={dy(t)} y2={dy(t)} class="sv-grid" />
+                  <text x={decay.l - 8} y={dy(t) + 4} text-anchor="end" class="sv-tick">{Math.round(t * 100)}%</text>
+                </g>
+              ))}
+              {xTicks.map((t) => <text x={dx(t)} y={decay.h - decay.b + 18} text-anchor="middle" class="sv-tick">{t} m</text>)}
+              {decayPaths.map((p) => (
+                <path d={p.d} fill="none" stroke={p.color} stroke-width="2.5" stroke-linecap="round" class="sv-line">
+                  <title>{`${p.name}: β = ${p.beta} m⁻¹`}</title>
+                </path>
+              ))}
+              {decayLabels.map((lb) => <text x={lb.x} y={lb.y} text-anchor={lb.anchor} class="sv-direct">{lb.text}</text>)}
+            </svg>
+            <div class="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs text-gray-600 dark:text-gray-400">
+              {weather.map((wx) => <span class="inline-flex items-center gap-1.5"><span class="inline-block h-0.5 w-4 rounded" style={`background: ${wx.color}`}></span>{wx.name}</span>)}
+            </div>
+          </figure>
+
+          <figure class="rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 p-4">
+            <figcaption class="mb-4">
+              <div class="font-semibold text-gray-900 dark:text-gray-100">Measured vehicle visibility limit</div>
+              <div class="text-xs text-gray-500 dark:text-gray-400">Farthest distance a vehicle is resolvable by the camera</div>
+            </figcaption>
+            <div class="space-y-4">
+              {weather.map((wx) => (
+                <div title={wx.limit ? `${wx.name}: ${wx.limit} m (β = ${wx.beta} m⁻¹)` : `${wx.name}: no measurable limit`}>
+                  <div class="flex justify-between text-sm mb-1">
+                    <span class="text-gray-800 dark:text-gray-200">{wx.name}</span>
+                    <span class="font-semibold text-gray-900 dark:text-gray-100">{wx.limit ? `${wx.limit} m` : "No limit"}</span>
+                  </div>
+                  <div class="h-3 rounded-full bg-gray-100 dark:bg-gray-800 overflow-hidden">
+                    <div
+                      class={`h-full rounded-full ${wx.limit ? "" : "sv-unbounded"}`}
+                      style={`width: ${wx.limit ? Math.max(3, (wx.limit / limitMax) * 100) : 100}%; background-color: ${wx.color}`}
+                    ></div>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <p class="mt-5 text-xs text-gray-500 dark:text-gray-400">In fog + rain the camera's physical limit drops to about 20 m: beyond it, the geometry simply isn't in the image.</p>
+          </figure>
+        </div>
+      </section>
+
+      <!-- Hallucination -->
+      <section class="mb-14">
+        <h2 class="text-3xl font-bold mb-2 text-blue-600 dark:text-blue-400">Catching Hallucination with Physics</h2>
+        <p class="text-gray-700 dark:text-gray-300 mb-6">
+          With the real visibility limit known, every claim the model makes can be checked: if it says it can see an object that lies beyond
+          the physical limit, that claim is provably impossible.
+        </p>
+        <div class="grid md:grid-cols-2 gap-4">
+          <div class="rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 p-5">
+            <div class="font-semibold text-gray-900 dark:text-gray-100">Camera-only model: "I can see it"</div>
+            <div class="text-xs text-gray-500 dark:text-gray-400 mb-5">Share of objects claimed visible</div>
+            {[
+              { l: "Long-range fog, beyond the physical limit", v: 62.2 },
+              { l: "Where the camera can genuinely see", v: 0 },
+            ].map((b) => (
+              <div class="mb-4" title={`${b.l}: ${b.v}%`}>
+                <div class="flex justify-between text-sm mb-1">
+                  <span class="text-gray-800 dark:text-gray-200">{b.l}</span>
+                  <span class="font-semibold text-gray-900 dark:text-gray-100">{b.v}%</span>
+                </div>
+                <div class="h-3 rounded-full bg-gray-100 dark:bg-gray-800 overflow-hidden">
+                  <div class="h-full rounded-full" style={`width: ${Math.max(b.v, 0.0001)}%; background-color: var(--sv-violet)`}></div>
+                </div>
+              </div>
+            ))}
+            <p class="text-sm text-gray-700 dark:text-gray-300">
+              In <strong class="text-gray-900 dark:text-gray-100">62.2%</strong> of long-range fog cases, the camera-only model claims to see objects that are physically unresolvable.
+            </p>
+          </div>
+          <div class="rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 p-5 flex flex-col">
+            <div class="font-semibold text-gray-900 dark:text-gray-100">The signature of a text prior</div>
+            <div class="text-xs text-gray-500 dark:text-gray-400 mb-5">How often the model claims visibility, by weather</div>
+            <div class="grid grid-cols-2 gap-3 flex-1">
+              <div class="rounded-lg bg-gray-50 dark:bg-gray-800/60 p-4 text-center">
+                <div class="text-xs text-gray-500 dark:text-gray-400">Clear</div>
+                <div class="text-3xl font-bold text-gray-900 dark:text-gray-100 mt-1">71%</div>
+                <div class="text-xs text-gray-500 dark:text-gray-400 mt-1">visibility: no limit</div>
+              </div>
+              <div class="rounded-lg bg-gray-50 dark:bg-gray-800/60 p-4 text-center">
+                <div class="text-xs text-gray-500 dark:text-gray-400">Fog + rain</div>
+                <div class="text-3xl font-bold text-gray-900 dark:text-gray-100 mt-1">78%</div>
+                <div class="text-xs text-gray-500 dark:text-gray-400 mt-1">visibility: 20.6 m</div>
+              </div>
+            </div>
+            <p class="mt-4 text-sm text-gray-700 dark:text-gray-300">
+              A model truly reading pixels would claim <em>less</em> as visibility collapses. The flat rate shows language priors overriding visual
+              evidence, which is exactly why StormVLM anchors perception in radar and checks claims in code.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Complementary coverage -->
+      <section class="mb-14">
+        <h2 class="text-3xl font-bold mb-2 text-blue-600 dark:text-blue-400">Two Sensors, Complementary Strengths</h2>
+        <p class="text-gray-700 dark:text-gray-300 mb-6">
+          Each modality is the <strong class="text-gray-900 dark:text-gray-100">only</strong> source of coverage for roughly 1 in 7 objects, and the split is decided entirely by the weather.
+        </p>
+        <div class="grid sm:grid-cols-3 gap-3">
+          <div class="rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 p-5">
+            <div class="text-2xl" aria-hidden="true">📷</div>
+            <div class="mt-2 font-semibold text-gray-900 dark:text-gray-100">Camera carries clear and rain</div>
+            <p class="mt-1 text-sm text-gray-700 dark:text-gray-300">Every object covered by the camera alone appears in clear or rainy scenes.</p>
+          </div>
+          <div class="rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 p-5">
+            <div class="text-2xl" aria-hidden="true">📡</div>
+            <div class="mt-2 font-semibold text-gray-900 dark:text-gray-100">Radar carries fog</div>
+            <p class="mt-1 text-sm text-gray-700 dark:text-gray-300">Every object covered by radar alone appears in fog, exactly where the camera fails.</p>
+          </div>
+          <div class="rounded-xl border border-blue-200 dark:border-blue-900 bg-blue-50 dark:bg-blue-950/40 p-5">
+            <div class="text-3xl font-bold text-blue-700 dark:text-blue-300">89.6%</div>
+            <div class="mt-1 font-semibold text-gray-900 dark:text-gray-100">of objects in fog covered</div>
+            <p class="mt-1 text-sm text-gray-700 dark:text-gray-300">by at least one sensor when radar and camera are fused.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- RSS gate -->
+      <section class="mb-14">
+        <h2 class="text-3xl font-bold mb-2 text-blue-600 dark:text-blue-400">The RSS Safety Gate</h2>
+        <p class="text-gray-700 dark:text-gray-300 mb-6">
+          Risk at the top end is not the model's to decide. Responsibility-Sensitive Safety (RSS) rules, applied identically in every pipeline, can
+          force or cap the risk the model proposes.
+        </p>
+        <div class="grid sm:grid-cols-2 gap-3 mb-6">
+          {[
+            ["Moving away", "Diverging, falling behind or moving away", "NO RISK"],
+            ["Outside the corridor", "More than 3 m to the side and not closing in", "NO RISK"],
+            ["RSS violated", "A front object breaks the safe distance on both axes", "HIGH (forced)"],
+            ["RSS satisfied", "The model said HIGH, but RSS says the gap is safe", "capped at MODERATE"],
+          ].map(([t, c, e]) => (
+            <div class="rounded-xl border border-gray-200 dark:border-gray-700 bg-white/80 dark:bg-gray-900/70 p-4">
+              <div class="font-semibold text-gray-900 dark:text-gray-100">{t}</div>
+              <div class="text-sm text-gray-700 dark:text-gray-300 mt-1">{c}</div>
+              <div class="mt-3 inline-block rounded-md bg-purple-500/10 dark:bg-purple-500/20 px-2 py-1 text-xs font-semibold text-purple-700 dark:text-purple-300">→ {e}</div>
+            </div>
+          ))}
+        </div>
+        <p class="text-sm text-gray-700 dark:text-gray-300 mb-3">
+          The corridor rule never gets the last word: a cut-in starts outside the corridor, so the RSS check still runs and can escalate to
+          HIGH. The gate also ignores the perception category, so pipelines differ only in <em>which</em> objects they keep, never in how they grade them.
+        </p>
+        <div class="flex flex-wrap gap-2">
+          {[["ρ response time", "0.5 s"], ["max accel during ρ", "3.0 m/s²"], ["min ego braking", "4.0 m/s²"], ["max lead braking", "8.0 m/s²"], ["lateral margin μ", "1.5 m"]].map(([k, v]) => (
+            <span class="px-3 py-1 bg-blue-500/10 dark:bg-blue-500/20 text-blue-700 dark:text-blue-300 rounded-full text-sm">{k}: <strong>{v}</strong></span>
+          ))}
+        </div>
+      </section>
+
+      <!-- Planner -->
+      <section class="mb-14">
+        <h2 class="text-3xl font-bold mb-2 text-blue-600 dark:text-blue-400">A Planner That Can't Go Off the Rails</h2>
+        <p class="text-gray-700 dark:text-gray-300 mb-6">
+          The action is generated by the VLM, but inside a strict structural envelope: one call decides, a second explains, and the explanation
+          is written only after the action is fixed.
+        </p>
+        <div class="grid md:grid-cols-2 gap-4 items-start">
+          <div class="rounded-xl bg-gray-900 dark:bg-black/60 border border-gray-800 p-4 font-mono text-sm overflow-x-auto">
+            <div class="text-gray-400 text-xs mb-2">// decision call: the only accepted shape</div>
+            <pre class="text-gray-100"><span class="text-gray-400">{"{"}</span>
+  <span class="text-blue-300">"critical_object_id"</span>: <span class="text-green-300">"Front_vehicle_2"</span>,
+  <span class="text-blue-300">"critical_risk"</span>: <span class="text-green-300">"HIGH"</span>,
+  <span class="text-blue-300">"action"</span>: <span class="text-green-300">"EMERGENCY_BRAKE"</span>
+<span class="text-gray-400">{"}"}</span></pre>
+            <div class="mt-3 text-xs text-gray-400">action ∈ KEEP_SPEED · DECELERATE · EMERGENCY_BRAKE</div>
+          </div>
+          <ul class="space-y-3 text-gray-700 dark:text-gray-300">
+            {[
+              ["Candidates filtered in code", "Only front objects that the safety gate hasn't cleared are shown, so the model can't pick one it never saw."],
+              ["Three fields, no free text", "Naming the object and its risk before the action acts as a compressed chain of thought."],
+              ["Strict parsing", "Invalid JSON, an unknown action or an invented object ID is counted as a failure, never silently repaired."],
+              ["Fails toward braking", "If a call ever fails, the fallback maps the worst risk present to braking, not to keeping speed."],
+            ].map(([k, v]) => (
+              <li class="flex items-start">
+                <span class="text-blue-600 dark:text-blue-400 mr-2">•</span>
+                <span><strong class="text-gray-900 dark:text-gray-100">{k}:</strong> {v}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div class="mt-5 rounded-xl border border-green-200 dark:border-green-900 bg-green-50 dark:bg-green-950/30 p-4 text-sm text-gray-800 dark:text-gray-200">
+          <strong class="text-gray-900 dark:text-gray-100">49 of 49</strong> decision calls returned valid JSON with an allowed action and a real object from the candidate list. The fallback never had to fire.
+        </div>
+      </section>
+
+      <!-- Ablation -->
+      <section class="mb-14">
+        <h2 class="text-3xl font-bold mb-2 text-blue-600 dark:text-blue-400">Four Pipelines, One Variable Each</h2>
+        <p class="text-gray-700 dark:text-gray-300 mb-6">
+          Each variant differs from the reference in exactly one thing, enforced in the schema itself, not just the prompt: the camera-only
+          pipeline has no radar field at all, and the radar-only pipeline has no camera field at all.
+        </p>
+        <div class="rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 p-5 mb-4">
+          <div class="font-semibold text-gray-900 dark:text-gray-100">Actions matching the RSS safety oracle</div>
+          <div class="text-xs text-gray-500 dark:text-gray-400 mb-5">Out of 50 weather-balanced frames, scored against ground truth</div>
+          <div class="space-y-3">
+            {arms.map((a) => (
+              <div class="grid grid-cols-[2.25rem_1fr] sm:grid-cols-[2.25rem_13rem_1fr] items-center gap-x-3 gap-y-1" title={`Pipeline ${a.id}, ${a.name}: ${a.exact} of 50`}>
+                <span class={`h-8 w-8 rounded-lg flex items-center justify-center text-sm font-bold ${a.id === "A" ? "bg-blue-600 text-white" : "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300"}`}>{a.id}</span>
+                <span class="text-sm text-gray-800 dark:text-gray-200">{a.name}<span class="text-xs text-gray-500 dark:text-gray-400"> · {a.note}</span></span>
+                <div class="col-span-2 sm:col-span-1 flex items-center gap-3">
+                  <div class="flex-1 h-3 rounded-full bg-gray-100 dark:bg-gray-800 overflow-hidden">
+                    <div class="h-full rounded-full" style={`width: ${(a.exact / 50) * 100}%; background-color: var(--sv-1)`}></div>
+                  </div>
+                  <span class="w-12 text-right text-sm font-semibold text-gray-900 dark:text-gray-100">{a.exact}/50</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div class="grid grid-cols-3 gap-3 mb-6">
+          {[["0", "missed hazards"], ["0", "false emergency brakes"], ["0", "under-reactions"]].map(([v, l]) => (
+            <div class="rounded-xl border border-gray-200 dark:border-gray-700 bg-white/70 dark:bg-gray-900/60 p-4 text-center">
+              <div class="text-3xl font-bold text-gray-900 dark:text-gray-100">{v}</div>
+              <div class="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mt-1">{l}</div>
+            </div>
+          ))}
+        </div>
+        <p class="text-sm text-gray-700 dark:text-gray-300 mb-6">
+          Across all four pipelines, every hazard is caught and every emergency brake lands on the same five frames.
+          The fused radar + camera pipeline with JSON output matches the oracle most often.
+        </p>
+
+        <div class="rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 p-5">
+          <div class="font-semibold text-gray-900 dark:text-gray-100">JSON vs. prose: same model, same scenes</div>
+          <div class="text-xs text-gray-500 dark:text-gray-400 mb-5">Raw "decelerate" decisions out of 50, before the safety gate</div>
+          {[{ l: "Prose output", v: 34 }, { l: "JSON schema", v: 6 }].map((b) => (
+            <div class="mb-3" title={`${b.l}: ${b.v} of 50`}>
+              <div class="flex justify-between text-sm mb-1">
+                <span class="text-gray-800 dark:text-gray-200">{b.l}</span>
+                <span class="font-semibold text-gray-900 dark:text-gray-100">{b.v}</span>
+              </div>
+              <div class="h-3 rounded-full bg-gray-100 dark:bg-gray-800 overflow-hidden">
+                <div class="h-full rounded-full" style={`width: ${(b.v / 50) * 100}%; background-color: var(--sv-violet)`}></div>
+              </div>
+            </div>
+          ))}
+          <p class="text-sm text-gray-700 dark:text-gray-300 mt-4">
+            Changing only the output format swings decisions <strong class="text-gray-900 dark:text-gray-100">sixfold</strong>. A rigid schema keeps the planner calm and
+            predictable, and on the 19 frames the deterministic layer resolves, both formats agree perfectly.
+          </p>
+        </div>
+      </section>
+
+      <!-- Stack -->
+      <section class="mb-12">
+        <h2 class="text-3xl font-bold mb-4 text-blue-600 dark:text-blue-400">Technical Stack</h2>
+        <div class="flex flex-wrap gap-2">
+          {stack.map((s) => <span class="px-3 py-1 bg-blue-500/10 dark:bg-blue-500/20 text-blue-700 dark:text-blue-300 rounded-full text-sm">{s}</span>)}
+        </div>
+        <p class="mt-4 text-sm text-gray-700 dark:text-gray-300">
+          Runs fully offline on an Apple M1 with 8 GB of unified memory, with deterministic (temperature 0) decoding so every difference between
+          pipelines comes from the variable being tested. Evaluated on the Adver-City-R dataset in OPV2V format across 18 scenes.
+        </p>
+      </section>
+
+      <section class="flex flex-wrap gap-4">
+        <a
+          href="https://github.com/myabdelhamid/StormVLM"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors shadow-lg"
+        >
+          <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+          </svg>
+          View on GitHub
+        </a>
+      </section>
+    </main>
+
+    <button
+      id="scrollToTop"
+      class="fixed bottom-8 right-8 w-12 h-12 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-lg transition-all duration-300 opacity-0 pointer-events-none flex items-center justify-center z-50"
+      aria-label="Scroll to top"
+    >
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+      </svg>
+    </button>
+    <Footer />
+  </body>
+</html>
+
+<style is:global>
+  :root {
+    --sv-1: #2a78d6;
+    --sv-2: #eb6834;
+    --sv-3: #1baf7a;
+    --sv-4: #eda100;
+    --sv-violet: #6250d6;
+    --sv-ink: #374151;
+    --sv-muted: #6b7280;
+    --sv-grid: #e5e7eb;
+    --sv-road: #f3f4f6;
+    --sv-noise: #9ca3af;
+    --sv-surface: #ffffff;
+  }
+  :root.dark {
+    --sv-1: #3987e5;
+    --sv-2: #d95926;
+    --sv-3: #199e70;
+    --sv-4: #c98500;
+    --sv-violet: #9085e9;
+    --sv-ink: #d1d5db;
+    --sv-muted: #9ca3af;
+    --sv-grid: #1f2937;
+    --sv-road: #1f2937;
+    --sv-noise: #4b5563;
+    --sv-surface: #111827;
+  }
+  .sv-road { fill: var(--sv-road); }
+  .sv-lane { stroke: var(--sv-muted); stroke-width: 1.5; stroke-dasharray: 8 8; opacity: 0.6; }
+  .sv-fov { fill: var(--sv-1); opacity: 0.07; }
+  .sv-noise { fill: var(--sv-noise); }
+  .sv-noise-swatch { background: var(--sv-noise); }
+  .sv-pt { fill: var(--sv-1); stroke: var(--sv-surface); stroke-width: 0.8; }
+  .sv-cluster { fill: none; stroke: var(--sv-1); stroke-width: 1.5; stroke-dasharray: 4 3; }
+  .sv-vec { stroke: var(--sv-violet); stroke-width: 2; }
+  .sv-vec-head { fill: var(--sv-violet); }
+  .sv-anchor-label { font: 600 11px 'IBM Plex Mono', monospace; fill: var(--sv-ink); }
+  .sv-ego { fill: var(--sv-violet); }
+  .sv-ego-label { font: 700 8px 'IBM Plex Mono', monospace; fill: #ffffff; }
+  .sv-grid { stroke: var(--sv-grid); stroke-width: 1; }
+  
+  .sv-tick { font: 12px 'IBM Plex Mono', monospace; fill: var(--sv-muted); }
+  .sv-direct { font: 600 12px 'IBM Plex Mono', monospace; fill: var(--sv-ink); paint-order: stroke; stroke: var(--sv-surface); stroke-width: 4px; stroke-linejoin: round; }
+  .sv-unbounded { background-image: repeating-linear-gradient(45deg, transparent 0 6px, rgba(255,255,255,0.35) 6px 9px); }
+  #scrollToTop.show { opacity: 1; pointer-events: auto; }
+</style>
+
+<script>
+  const scrollToTopBtn = document.getElementById("scrollToTop");
+  window.addEventListener("scroll", () => {
+    if (window.scrollY > 300) scrollToTopBtn?.classList.add("show");
+    else scrollToTopBtn?.classList.remove("show");
+  });
+  scrollToTopBtn?.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
+</script>

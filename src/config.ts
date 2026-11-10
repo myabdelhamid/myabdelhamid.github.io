@@ -47,7 +47,8 @@ export const siteConfig = {
       name: "StormVLM - Radar-Augmented VLM for Extreme Weather",
       description:
         "MSc thesis (graded \"Excellent\"): a framework that adds radar to camera input so a vision-language model can reason about driving scenes in extreme weather. Reaching 89.6% object coverage in extreme foggy street with zero missed hazards across 50 unique scenes.",
-      skills: ["Python", "Vision-Language Models", "Sensor Fusion", "LLM-as-Judge"],
+      link: "/projects/stormvlm",
+      skills: ["Python", "Vision-Language Models", "Qwen2.5-VL", "MLX", "Radar Fusion", "RSS Safety"],
     },
     {
       name: "Amtsbrief - AI Decoder for German Official Letters",
